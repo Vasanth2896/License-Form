@@ -1,58 +1,41 @@
-import React from 'react';
-import logo from './logo.svg';
-import { Counter } from './features/counter/Counter';
-import './App.css';
+import React, { useEffect } from 'react';
+import FormLayout from './components/formlayout/FormLayout';
+import TableLayout from './components/TableLayout/TableLayout';
+import { Route } from 'react-router-dom'
+import { table } from "./seed/routeSeed";
+import Navbar from './components/common/Navbar';
+import { bindActionCreators } from 'redux';
+import { connect } from 'react-redux';
+import { app_onChange } from "./store/appActions";
 
-function App() {
+function App(props) {
+  const { onChange } = props;
+
+  useEffect(() => {
+    onChange('addressDetails', {
+      communicationAddress: 'dummy3',
+      district: 'Salem',
+      state: 'Tamil Nadu',
+      country: 'India',
+      pincode: '123123',
+    })
+  })
   return (
     <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <Counter />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <span>
-          <span>Learn </span>
-          <a
-            className="App-link"
-            href="https://reactjs.org/"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            React
-          </a>
-          <span>, </span>
-          <a
-            className="App-link"
-            href="https://redux.js.org/"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Redux
-          </a>
-          <span>, </span>
-          <a
-            className="App-link"
-            href="https://redux-toolkit.js.org/"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Redux Toolkit
-          </a>
-          ,<span> and </span>
-          <a
-            className="App-link"
-            href="https://react-redux.js.org/"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            React Redux
-          </a>
-        </span>
-      </header>
+      <Navbar />
+      <Route exact path={table} component={TableLayout} />
+      <Route path={'/layout'} component={FormLayout} />
     </div>
   );
 }
 
-export default App;
+
+const mapDispatchToProps = (dispatch) => {
+  return bindActionCreators({
+    onChange: app_onChange
+  }, dispatch)
+}
+
+
+
+export default connect(null, mapDispatchToProps)(App);

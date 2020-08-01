@@ -1,0 +1,84 @@
+.tableLayoutContainer {
+  margin: 0px 30px;
+
+  .tableLayoutHeader {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 20px;
+  }
+
+  .userListHeader {
+    display: flex;
+    align-items: center;
+  }
+
+  .HeaderContent {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    width: 100%;
+    pointer-events: none;
+  }
+
+  .ReactTable {
+    .rt-thead.-header {
+      background: #80808040 !important;
+      box-shadow: unset !important;
+      height: 50px;
+    }
+
+    .rt-tr {
+      flex: 1 0 auto;
+      display: inline-flex;
+      align-items: center;
+    }
+
+    .rt-thead .rt-tr {
+      align-items: center !important ;
+      pointer-events: none !important;
+    }
+
+    .rt-resizable-header-content {
+      width: 100%;
+      padding: 0px 10px;
+    }
+
+    .rt-th.rt-resizable-header.-cursor-pointer {
+      height: 30px;
+      display: flex;
+      align-items: center;
+      outline: unset;
+      border-right: 1px solid grey;
+      box-shadow: unset !important;
+    }
+
+    .rt-resizer {
+      pointer-events: auto;
+    }
+
+    .rt-tr-group {
+      height: 50px;
+    }
+
+    .rt-tbody.rt-td {
+      display: flex;
+      align-items: center;
+    }
+
+    .rt-tr.-even {
+      background: aliceblue;
+    }
+
+}
+}
+
+.ReactTable.-striped .rt-tr.-odd {
+  background: white !important;
+}
+
+// .ReactTable .rt-tr {
+//   flex: 1 0 auto;
+//   display: inline-flex;
+//   align-items: center;
+// }
