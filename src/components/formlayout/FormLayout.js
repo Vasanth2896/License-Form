@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Container, AppBar, Typography, Toolbar, Grid } from "@material-ui/core";
+import { Container, Grid } from "@material-ui/core";
 import { Stepper, Step, StepButton } from '@material-ui/core/';
 import FormFooter from './Formfooter/FormFooter';
 import PersonalDetails from './PersonalDetails/PersonalDetails';
@@ -8,8 +8,6 @@ import AddressDetails from './AddressDetails/AddressDetails';
 import { Route, Switch, useHistory, Redirect } from "react-router-dom";
 import { makeStyles } from '@material-ui/core/styles';
 import { connect } from 'react-redux';
-import { bindActionCreators } from 'redux';
-import { errorValidation } from '../../store/appActions'
 import _ from 'lodash'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faArrowLeft } from '@fortawesome/free-solid-svg-icons'
@@ -21,11 +19,6 @@ const useStyles = makeStyles((theme) => ({
     },
 }));
 
-function getSteps() {
-    return ['Personal Details', 'Address Details', 'Professional Details'];
-}
-
-
 const FormLayout = (props) => {
     const { state } = props;
     const { student, professional, personalDetails, addressDetails, professionalDetailToggle, personalDetailError } = state;
@@ -34,10 +27,25 @@ const FormLayout = (props) => {
     const [activeStep, setActiveStep] = useState(0);
     const [completed, setCompleted] = useState({});
     const [errorFree, setErrorFree] = useState(false);
-    const steps = getSteps();
     const newCompleted = { ...completed };
-
     const newErrorFree = personalDetailError.usernameError || personalDetailError.mailIdError;
+    const steps = [
+        {
+            id: 0,
+            name: 'Personal Details',
+            routePath: '/layout/PersonalDetails'
+        },
+        {
+            id: 1,
+            name: 'Address Details',
+            routePath: '/layout/AddressDetails'
+        },
+        {
+            id: 2,
+            name: 'Professional Details',
+            routePath: '/layout/ProfessionalDetails'
+        }
+    ]
 
     const data = _.cloneDeep(personalDetails);
     let test = false, productknowledgecheckflag = false, dateFlag = false, testingFlag = false, optionalFlag = false;
@@ -76,16 +84,13 @@ const FormLayout = (props) => {
     useEffect(() => {
 
         if (mainFlag && !optionalFlag) {
-            console.log('This is if in personal details');
-            handleComplete(mainFlag)
+            handleComplete(mainFlag, 0)
         }
         else if (mainFlag && optionalFlag) {
-            console.log('This is else if in personal details');
-            handleComplete(mainFlag);
+            handleComplete(mainFlag, 0);
         }
         else {
-            console.log('This is else  in personal details');
-            handleComplete(false);
+            handleComplete(false, 0);
         }
     }, [mainFlag, optionalFlag])
 
@@ -100,63 +105,45 @@ const FormLayout = (props) => {
         }
     }
 
-    const handleComplete = (dum, currentStep) => {
-        console.log(dum, 'dum');
-        if (currentStep) {
-            newCompleted[currentStep] = dum;
-        }
-        else {
-            newCompleted[activeStep] = dum;
-        }
+    const handleComplete = (completeflag, currentStep) => {
+        newCompleted[currentStep] = completeflag;
         setCompleted({ ...newCompleted });
     };
 
     useEffect(() => {
         setErrorFree(newErrorFree);
-    });
+    }, [newErrorFree]);
 
     useEffect(() => {
-        console.log(addressDetails, activeStep, `This is address Details in  use Effect`);
         handleComplete(Object.values(addressDetails).every(detail => detail !== ''), 1);
-        console.log(newCompleted, 'This is newCompleted in useEffect')
-
     }, [addressDetails]);
 
     useEffect(() => {
-        handleComplete(Object.values(professional).every(detail => detail !== ''));
-    }, [professional]);
-
-    useEffect(() => {
-        handleComplete(Object.values(student).every(detail => detail !== ''));
-    }, [student]);
-
-    useEffect(() => {
-        if (professionalDetailToggle === 'housewives') {
-            handleComplete(true);
+        if (professionalDetailToggle === 'student' || professionalDetailToggle === 'professional') {
+            handleComplete(Object.values(state[professionalDetailToggle]).every(detail => detail !== ''), 2);
         }
         else {
-            handleComplete(false);
+            if (professionalDetailToggle === 'housewives') {
+                handleComplete(true, 2);
+            }
+            else {
+                handleComplete(false, 2);
+            }
         }
-    }, [professionalDetailToggle]);
-
+    }, [professional, student, professionalDetailToggle]);
 
     const handleNext = () => {
         setActiveStep((prevActiveStep) => prevActiveStep + 1);
+        history.push(steps[activeStep + 1].routePath)
     };
 
     const handleBack = () => {
         setActiveStep((prevActiveStep) => prevActiveStep - 1);
+        history.push(steps[activeStep - 1].routePath);
     };
 
-    const handleStep = (step, label) => {
-        if (label === 'Personal Details') {
-            history.push('/layout/PersonalDetails');
-        }
-        else if (label === 'Address Details') {
-            history.push('/layout/AddressDetails');
-        } else if (label === 'Professional Details') {
-            history.push('/layout/ProfessionalDetails');
-        }
+    const handleStep = (step) => {
+        history.push(steps[step].routePath);
         setActiveStep(step);
     };
 
@@ -168,12 +155,12 @@ const FormLayout = (props) => {
                     <h2>Individual User</h2>
                 </div>
                 <Grid container spacing={7}>
-                    <Grid item xs={3}>
+                    <Grid item xs={3} style={{ cursor: errorFree ? 'not-allowed' : 'default' }} >
                         <Stepper elevation={2} className={classes.root} activeStep={activeStep} nonLinear orientation="vertical">
-                            {steps.map((label, index) => ( // step.id step.index
-                                <Step key={label}>
-                                    <StepButton onClick={() => handleStep(index, label)} completed={completed[index]} disabled={errorFree} >
-                                        {label}
+                            {steps.map((step) => ( // step.id step.index
+                                <Step key={step.id}>
+                                    <StepButton onClick={() => handleStep(step.id)} completed={completed[step.id]} disabled={errorFree} >
+                                        {step.name}
                                     </StepButton>
                                 </Step>
                             ))}
@@ -202,10 +189,4 @@ const mapStateToProps = (state) => {
     }
 }
 
-const mapDispatchToProps = (dispatch) => {
-    return bindActionCreators({
-        errorValidation: errorValidation,
-    }, dispatch)
-}
-
-export default connect(mapStateToProps, mapDispatchToProps)(FormLayout);
+export default connect(mapStateToProps)(FormLayout);

@@ -1,19 +1,12 @@
 import React from 'react';
-import { Paper, makeStyles } from "@material-ui/core";
-
-const useStyles = makeStyles((theme) => ({
-    housewivesFormContainer: {
-        background: '#8080801f',
-        height: '30em'
-    },
-}));
+import { Paper } from "@material-ui/core";
+import { professionalDetailsFormStyles } from '../../../common/commonStyles'
 
 const HousewivesForm = () => {
-
-    const classes = useStyles();
+    const classes = professionalDetailsFormStyles();
 
     return (
-        <Paper className={classes.housewivesFormContainer}>
+        <Paper className={classes.professionalDetailsFormStyles}>
             <div style={{ padding: '50px 40px 40px 40px', }}>
                 <p>No Details necessary</p>
             </div>

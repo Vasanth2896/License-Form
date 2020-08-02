@@ -1,36 +1,28 @@
 import React from 'react';
-import {
-    Paper, Grid, Box, TextField, Checkbox
-    , FormControl, InputLabel, Select, MenuItem
-} from "@material-ui/core";
+import {Paper, Grid, Box, TextField, Checkbox} from "@material-ui/core";
 import { connect } from 'react-redux';
 import _ from 'lodash'
-import { states } from "../../../seed/stateSeed";
+import { IndianStates } from "../../../seed/seed";
 import { bindActionCreators } from 'redux';
 import { app_onChange } from '../../../store/appActions';
+import InputSelect from "../../common/InputSelect";
+import {AddressDetailsStyles} from '../../common/commonStyles'
 
 
 const AddressDetails = (props) => {
-    const { state,onChange } = props;
+    const classes = AddressDetailsStyles();
+    const { state, onChange } = props;
     const currentState = _.cloneDeep(state);
     const { addressDetails } = currentState;
 
-    // const { state,onChange } = props;
-    // const { addressDetails } = state;
-
     const handleChange = (e) => {
         addressDetails[e.target.name] = e.target.value;
-        onChange('addressDetails',addressDetails);
+        onChange('addressDetails', addressDetails);
     }
-    const renderStateOptions = states.map(state => {
-        return (
-            <MenuItem key={state} value={state}>{state}</MenuItem>
-        )
-    });
 
     return (
-        <Paper className='personalDetailsContainer' elevation={2}>
-            <div style={{ padding: '25px 40px 40px 40px', height: '30em' }}>
+        <Paper className={classes.AddressDetailsStyles} elevation={2}>
+            <div style={{ padding: '25px 40px 40px 40px' }}>
                 <h2>Communication Address</h2>
                 <Grid container spacing={5}>,
                     <Grid item xs={12}>
@@ -58,21 +50,14 @@ const AddressDetails = (props) => {
                         </Box>
                     </Grid>
                     <Grid item xs={6}>
-                        <Box>
-                            <FormControl fullWidth>
-                                <InputLabel id="state" style={{ paddingLeft: 10 }}>State</InputLabel>
-                                <Select
-                                    variant='filled'
-                                    labelId="state"
-                                    id="state"
-                                    name='state'
-                                    value={addressDetails.state}
-                                    onChange={(e) => handleChange(e)}
-                                >
-                                    {renderStateOptions}
-                                </Select>
-                            </FormControl>
-                        </Box>
+                        <InputSelect
+                            labelName='State'
+                            labelId='state'
+                            name='state'
+                            handleChange={handleChange}
+                            value={addressDetails.state}
+                            menuOptions={IndianStates}
+                        />
                     </Grid>
                     <Grid item xs={6}>
                         <Box>
@@ -125,4 +110,4 @@ const mapDispatchToProps = (dispatch) => {
     }, dispatch)
 }
 
-export default connect(mapStateToProps,mapDispatchToProps)(AddressDetails);
+export default connect(mapStateToProps, mapDispatchToProps)(AddressDetails);

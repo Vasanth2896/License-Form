@@ -1,19 +1,20 @@
 import React from 'react';
 import './PersonalDetails.scss'
 import {
-    TextField, Paper, Grid, Box, RadioGroup, FormLabel, FormControlLabel,
-    Radio, makeStyles, FormControl, FormGroup, Checkbox, withStyles, Select,
-    InputLabel, MenuItem
+    TextField, Paper, Grid, Box, RadioGroup, FormLabel, FormControlLabel, Radio, makeStyles, withStyles,
 } from '@material-ui/core';
 import { KeyboardDatePicker, MuiPickersUtilsProvider } from "@material-ui/pickers";
 import MomentUtils from "@date-io/moment";
 import moment from "moment";
-import { languages } from "../../../seed/languageSeed";
 import { Autocomplete } from "@material-ui/lab";
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import _ from 'lodash'
 import { app_onChange } from '../../../store/appActions';
+import InputSelect from '../../common/InputSelect';
+import { languages } from '../../../seed/seed'
+import CheckboxGroup from '../../common/CheckboxGroup';
+import { personalDetailStyles  } from "../../common/commonStyles";
 
 const CustomAutocomplete = withStyles({
     tag: {
@@ -33,39 +34,12 @@ const CustomAutocomplete = withStyles({
     }
 })(Autocomplete);
 
-const useStyles = makeStyles((theme) => ({
-
-    genderGroupContainer: {
-        display: 'flex',
-        alignItems: 'center',
-        justifyContent: 'space-evenly'
-    },
-    genderContainer: {
-        display: 'flex',
-        alignItems: 'center',
-        justifyContent: 'space-evenly',
-        width: '20em'
-    },
-    feedbackCheckboxContainer: {
-        display: 'flex',
-        alignItems: 'center',
-        justifyContent: 'space-between',
-        height: 100
-    },
-    showOrder: {
-        display: 'block'
-    },
-    hideOrder: {
-        display: 'none'
-    }
-}));
-
 const PersonalDetails = (props) => {
     const { state, onChange } = props;
     const currentState = _.cloneDeep(state);
     const { personalDetails, personalDetailError } = currentState;
     const { productKnowledge } = personalDetails;
-    const classes = useStyles();
+    const classes = personalDetailStyles();
     const handleChange = (e) => {
         personalDetails[e.target.name] = e.target.value;
         onChange('personalDetails', personalDetails);
@@ -89,11 +63,44 @@ const PersonalDetails = (props) => {
         onChange('personalDetails', personalDetails);
     }
 
-    const renderLanguageOptions = languages.map(language => {
-        return (
-            <MenuItem key={language} value={language}>{language}</MenuItem>
-        )
-    });
+    const checkboxList = [
+        {
+            id: 0,
+            label: 'Newspaper / Ads',
+            name: 'newspaperCheck',
+            value: productKnowledge.newspaperCheck
+        },
+        {
+            id: 1,
+            label: 'TV media',
+            name: 'tvCheck',
+            value: productKnowledge.tvCheck
+        },
+        {
+            id: 2,
+            label: 'Facebook',
+            name: 'facebookCheck',
+            value: productKnowledge.facebookCheck
+        },
+        {
+            id: 3,
+            label: 'LinkedIn',
+            name: 'linkedInCheck',
+            value: productKnowledge.linkedInCheck
+        },
+        {
+            id: 4,
+            label: 'By Friend',
+            name: 'byFriendCheck',
+            value: productKnowledge.byFriendCheck
+        },
+        {
+            id: 5,
+            label: 'Others',
+            name: 'otherCheck',
+            value: productKnowledge.otherCheck
+        }
+    ]
 
     return (
         <Paper className='personalDetailsContainer' elevation={2}>
@@ -181,20 +188,14 @@ const PersonalDetails = (props) => {
                         </Box>
                     </Grid>
                     <Grid item xs={6}>
-                        <Box>
-                            <FormControl fullWidth>
-                                <InputLabel id="motherTongue" style={{ paddingLeft: 10 }}>Mother Tongue</InputLabel>
-                                <Select
-                                    variant='filled'
-                                    labelId="motherTongue"
-                                    name='motherTongue'
-                                    value={personalDetails.motherTongue}
-                                    onChange={(e) => handleChange(e)}
-                                >
-                                    {renderLanguageOptions}
-                                </Select>
-                            </FormControl>
-                        </Box>
+                        <InputSelect
+                            labelName='Mother Tongue'
+                            labelId='motherTongue'
+                            name='motherTongue'
+                            handleChange={handleChange}
+                            value={personalDetails.motherTongue}
+                            menuOptions={languages}
+                        />
                     </Grid>
                     <Grid item xs={12}>
                         <Box>
@@ -218,44 +219,12 @@ const PersonalDetails = (props) => {
                         </Box>
                     </Grid>
                     <Grid item xs={12}>
-                        <FormControl component="fieldset" fullWidth>
-                            <FormLabel component="legend">How you come to know about the product?</FormLabel>
-                            <FormGroup className={classes.feedbackCheckboxContainer} onChange={(e) => handleCheckChange(e)} row>
-                                <FormControlLabel
-                                    control={<Checkbox color='primary' checked={productKnowledge.newspaperCheck} />}
-                                    label="Newspaper / Ads"
-                                    name='newspaperCheck'
-                                /><FormControlLabel
-
-                                    control={<Checkbox color='primary' checked={productKnowledge.tvCheck} />}
-                                    label="TV media"
-                                    name='tvCheck'
-
-                                />
-                                <FormControlLabel
-                                    control={<Checkbox color='primary' checked={productKnowledge.faceBookCheck} />}
-                                    label="Facebook"
-                                    name='faceBookCheck'
-
-                                />
-                                <FormControlLabel
-                                    control={<Checkbox color='primary' checked={productKnowledge.linkedInCheck} />}
-                                    label="LinkedIn"
-                                    name='linkedInCheck'
-
-                                />
-                                <FormControlLabel
-                                    control={<Checkbox color='primary' checked={productKnowledge.byFriendCheck} />}
-                                    label="By Friend"
-                                    name='byFriendCheck'
-                                />
-                                <FormControlLabel
-                                    control={<Checkbox color='primary' checked={productKnowledge.otherCheck} />}
-                                    label="Others"
-                                    name='otherCheck'
-                                />
-                            </FormGroup>
-                        </FormControl>
+                        <CheckboxGroup
+                            checkboxList={checkboxList}
+                            formLabel='How you come to know about the product?'
+                            handleChange={handleCheckChange}
+                            formGroupClassName={classes.feedbackCheckboxContainer}
+                        />
                     </Grid>
                     <Grid item xs={12}>
                         <Box className={productKnowledge.otherCheck ? classes.showOrder : classes.hideOrder} >

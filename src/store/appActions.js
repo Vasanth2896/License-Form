@@ -91,7 +91,7 @@ export const initialState = {
                 level: '',
                 salary: ''
             },
-            professionalDetailToggle: 'Housewives',
+            professionalDetailToggle: 'housewives',
         },
         {
             personalDetails: {

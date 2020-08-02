@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Grid, Paper, makeStyles, RadioGroup, Radio, FormControlLabel } from "@material-ui/core";
+import { Grid, Paper, RadioGroup, Radio, FormControlLabel } from "@material-ui/core";
 import StudentForm from './StudentForm/StudentForm';
 import ProfessionalForm from './ProfessionalForm/ProfessionalForm';
 import HousewivesForm from './HousewivesForm/HousewivesForm';
@@ -7,36 +7,20 @@ import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import { app_onChange } from '../../../store/appActions'
 import _ from 'lodash'
-
-
-const useStyles = makeStyles({
-    professionalRadioButtonContainer: {
-        height: 100,
-        background: '#8080801f',
-        display: 'flex',
-        alignItems: 'center',
-        justifyContent: 'center'
-    },
-    professionalRadioButtons: {
-        width: '80%',
-        display: 'flex',
-        justifyContent: 'space-evenly',
-        alignItems: 'center'
-    },
-});
+import { professionalDetailRadioButtonStyles } from '../../common/commonStyles'
 
 const ProfessionalDetails = (props) => {
-    const classes = useStyles();
-    const { state,onChange } = props;
+    const classes = professionalDetailRadioButtonStyles();
+    const { state, onChange } = props;
     const currentState = _.cloneDeep(state);
-    const {professional,student,professionalDetailToggle} = currentState
+    const { professional, student, professionalDetailToggle } = currentState;
     const [professionalValue, setProfessionalValue] = useState(professionalDetailToggle);
 
     const handleRadioChange = (e) => {
         setProfessionalValue(e.target.value);
-        onChange('professionalDetailToggle',e.target.value);
-        if(professionalValue === 'student'){
-            Object.assign(student,{
+        onChange('professionalDetailToggle', e.target.value);
+        if (professionalValue === 'student') {
+            Object.assign(student, {
                 currentQualification: '',
                 institutionName: '',
                 studyingAt: '',
@@ -46,15 +30,16 @@ const ProfessionalDetails = (props) => {
                 country: '',
                 pincode: '',
             });
-            onChange('student',student);
+            onChange('student', student);
         }
-        else if(professionalValue === 'professional'){
-            Object.assign(professional,{
+        else if (professionalValue === 'professional') {
+            Object.assign(professional, {
                 level: '',
                 salary: ''
             })
-            onChange('professional',professional);
-        }}
+            onChange('professional', professional);
+        }
+    }
 
     return (
         <div>

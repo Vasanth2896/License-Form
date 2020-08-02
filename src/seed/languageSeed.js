@@ -1,1 +1,0 @@
-export const languages = ["English", "Tamil", "Telugu", "Kannada","Malayalam"];

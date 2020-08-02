@@ -1,19 +1,39 @@
-import React from "react";
+import React, { useState } from "react";
 import './TableLayout.scss';
 import ReactTable from 'react-table-v6'
 import { Button } from "@material-ui/core";
-import SortIcon from '@material-ui/icons/Sort';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import { app_onChange } from '../../store/appActions';
 import _ from 'lodash';
-
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { faEllipsisH } from '@fortawesome/free-solid-svg-icons'
+import TableHeaderContent from "./TableHeaderContent/TableHeaderContent";
 
 
 const TableLayout = (props) => {
     const { history, state } = props;
     const currentState = _.cloneDeep(state);
     const { userList } = currentState;
+    const [userTableState, setUserTableState] = useState({
+        usernameSort: false,
+        mailIdSort: false,
+        mobileNumberSort: false,
+        professionSort: false,
+        addressSort: false,
+        stateSort: false,
+        districtSort: false
+    });
+    const { usernameSort, mailIdSort, mobileNumberSort, professionSort, addressSort, stateSort, districtSort } = userTableState;
+
+    const handleSortChangeStyle = (props) => {
+        if (props[0].id !== '') {
+            const sortStyle = { ...userTableState };
+            sortStyle[`${props[0].id + 'Sort'}`] = props[0].desc;
+            setUserTableState({ ...sortStyle })
+
+        }
+    }
 
     const columns = [
         {
@@ -22,91 +42,55 @@ const TableLayout = (props) => {
                     S.NO
                 </div>
             ),
-            width: 70
+            width: 70,
+            resizable: false
         },
         {
-            Header: (
-                <div className='HeaderContent'>
-                    <span style={{ fontWeight: 'bold' }}>User name</span>
-                    <div style={{ pointerEvents: 'auto' }}>
-                        <SortIcon style={{ color: 'blue' }} />
-                    </div>
-                </div>
-            ),
+            Header: <TableHeaderContent columnName='User name' columnSortState={usernameSort} />,
             id: 'username',
             accessor: d => d.personalDetails.username
         },
         {
-            Header: (
-                <div className='HeaderContent'>
-                    <span style={{ fontWeight: 'bold' }}>Mail id</span>
-                    <div style={{ pointerEvents: 'auto' }}>
-                        <SortIcon style={{ color: 'blue' }} />
-                    </div>
-                </div>
-            ),
+            Header: <TableHeaderContent columnName='Mail id' columnSortState={mailIdSort} />,
             id: 'mailId',
             accessor: d => d.personalDetails.mailId
         },
         {
-            Header: (
-                <div className='HeaderContent'>
-                    <span style={{ fontWeight: 'bold' }}>Mobile no</span>
-                    <div style={{ pointerEvents: 'auto' }}>
-                        <SortIcon style={{ color: 'blue' }} />
-                    </div>
-                </div>
-            ),
+            Header: <TableHeaderContent columnName='Mobile no' columnSortState={mobileNumberSort} />,
             id: 'mobileNumber',
             accessor: d => d.personalDetails.mobileNumber
         },
         {
-            Header: (
-                <div className='HeaderContent'>
-                    <span style={{ fontWeight: 'bold' }}>Profession</span>
-                    <div style={{ pointerEvents: 'auto' }}>
-                        <SortIcon style={{ color: 'blue' }} />
-                    </div>
-                </div>
-            ),
+            Header: <TableHeaderContent columnName='Profession' columnSortState={professionSort} />,
             id: 'profession',
             accessor: d => d.professionalDetailToggle
         },
         {
-            Header: (
-                <div className='HeaderContent'>
-                    <span style={{ fontWeight: 'bold' }}>Address</span>
-                    <div style={{ pointerEvents: 'auto' }}>
-                        <SortIcon style={{ color: 'blue' }} />
-                    </div>
-                </div>
-            ),
-            id: 'Address',
+            Header: <TableHeaderContent columnName='Address' columnSortState={addressSort} />,
+            id: 'address',
             accessor: d => d.addressDetails.communicationAddress
         },
         {
-            Header: (
-                <div className='HeaderContent'>
-                    <span style={{ fontWeight: 'bold' }}>District</span>
-                    <div style={{ pointerEvents: 'auto' }}>
-                        <SortIcon style={{ color: 'blue' }} />
-                    </div>
-                </div>
-            ),
-            id: 'District',
+            Header: <TableHeaderContent columnName='District' columnSortState={districtSort} />,
+            id: 'district',
             accessor: d => d.addressDetails.district
         },
         {
-            Header: (
-                <div className='HeaderContent'>
-                    <span style={{ fontWeight: 'bold' }}>State</span>
-                    <div style={{ pointerEvents: 'auto' }}>
-                        <SortIcon style={{ color: 'blue' }} />
-                    </div>
-                </div>
-            ),
-            id: 'State',
+            Header: <TableHeaderContent columnName='State' columnSortState={stateSort} />,
+            id: 'state',
             accessor: d => d.addressDetails.state
+        },
+        {
+            Header: '',
+            Cell: ({ value, index }) => {
+                return (
+                    <div className='actionsContainer' >
+                        <FontAwesomeIcon icon={faEllipsisH} style={{ color: 'blue' }} />
+                    </div>
+                )
+            },
+            width: 100,
+            resizable: false
         },
     ];
 
@@ -134,6 +118,7 @@ const TableLayout = (props) => {
                     columns={columns}
                     className='-striped -highlight'
                     minRows={0}
+                    onSortedChange={(props) => handleSortChangeStyle(props)}
                 />
             </div>
         </div>

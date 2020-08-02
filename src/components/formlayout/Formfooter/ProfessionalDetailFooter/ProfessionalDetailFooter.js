@@ -8,8 +8,8 @@ const ProfessionalDetailFooter = (props) => {
     const { history, handleBack, errorValidation, onSave, setActiveStep } = props;
 
     const handleSave = () => {
-        const dummy = errorValidation();
-        if (dummy) {
+        const isValid = errorValidation();
+        if (isValid) {
             onSave();
             history.push('/');
         }
@@ -24,7 +24,6 @@ const ProfessionalDetailFooter = (props) => {
             <Button
                 variant='contained'
                 onClick={() => {
-                    history.push('/layout/AddressDetails');
                     handleBack();
                 }}
             >previous</Button>

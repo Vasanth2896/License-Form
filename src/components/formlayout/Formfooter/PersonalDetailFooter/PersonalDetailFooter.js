@@ -13,9 +13,8 @@ const PersonalDetailFooter = (props) => {
     }
 
     const handleErrorValidation = async () => {
-        const dummy =  await errorValidation();
-        if (dummy) {
-            history.push('/layout/AddressDetails')
+        const isValid =  await errorValidation();
+        if (isValid) {
             handleNext();
         }
     }
