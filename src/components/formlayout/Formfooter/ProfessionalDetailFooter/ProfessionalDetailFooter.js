@@ -5,7 +5,9 @@ import { bindActionCreators } from 'redux';
 import { errorValidation, onSave } from '../../../../store/appActions'
 
 const ProfessionalDetailFooter = (props) => {
-    const { history, handleBack, errorValidation, onSave, setActiveStep } = props;
+
+    const { history, handleBack, errorValidation, onSave, setActiveStep, state } = props;
+    const { editableIndex } = state;
 
     const handleSave = () => {
         const isValid = errorValidation();
@@ -31,7 +33,7 @@ const ProfessionalDetailFooter = (props) => {
                 variant='contained'
                 onClick={handleSave}
                 style={{ background: 'blue', color: 'white' }}
-            >save</Button>
+            >{editableIndex !== null ? 'update':'save'}</Button>
         </div>
     )
 }

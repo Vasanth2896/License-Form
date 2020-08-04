@@ -1,21 +1,23 @@
 import React, { useState } from "react";
 import './TableLayout.scss';
 import ReactTable from 'react-table-v6'
-import { Button } from "@material-ui/core";
+import { Button, TextField, InputAdornment, IconButton } from "@material-ui/core";
+import SearchIcon from '@material-ui/icons/Search';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
-import { app_onChange } from '../../store/appActions';
+import { app_onChange, onCancel } from '../../store/appActions';
 import _ from 'lodash';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faEllipsisH } from '@fortawesome/free-solid-svg-icons'
 import TableHeaderContent from "./TableHeaderContent/TableHeaderContent";
+import ActionComponent from "./ActionComponent/ActionComponent";
 
 
 const TableLayout = (props) => {
-    const { history, state } = props;
+    const { history, state,onCancel } = props;
     const currentState = _.cloneDeep(state);
     const { userList } = currentState;
     const [userTableState, setUserTableState] = useState({
+        filteredData: userList,
+        searchInput: '',
         usernameSort: false,
         mailIdSort: false,
         mobileNumberSort: false,
@@ -24,7 +26,8 @@ const TableLayout = (props) => {
         stateSort: false,
         districtSort: false
     });
-    const { usernameSort, mailIdSort, mobileNumberSort, professionSort, addressSort, stateSort, districtSort } = userTableState;
+    const { searchInput, usernameSort, mailIdSort, mobileNumberSort, professionSort, addressSort, stateSort, districtSort } = userTableState;
+    let newFilteredData;
 
     const handleSortChangeStyle = (props) => {
         if (props[0].id !== '') {
@@ -35,16 +38,14 @@ const TableLayout = (props) => {
         }
     }
 
+    const handleSearchInputchange = (e) => {
+        setUserTableState({ ...userTableState, searchInput: e.target.value });
+    }
+
+    
+
+
     const columns = [
-        {
-            Header: (
-                <div className='HeaderContent'>
-                    S.NO
-                </div>
-            ),
-            width: 70,
-            resizable: false
-        },
         {
             Header: <TableHeaderContent columnName='User name' columnSortState={usernameSort} />,
             id: 'username',
@@ -82,10 +83,11 @@ const TableLayout = (props) => {
         },
         {
             Header: '',
+            accessor: '',
             Cell: ({ value, index }) => {
                 return (
-                    <div className='actionsContainer' >
-                        <FontAwesomeIcon icon={faEllipsisH} style={{ color: 'blue' }} />
+                    <div className='actionsContainer'  >
+                        <ActionComponent value={value} index={index} />
                     </div>
                 )
             },
@@ -103,11 +105,32 @@ const TableLayout = (props) => {
                 </div>
                 <div className='searchbarContainer'>
                     <div>
+                        <TextField
+                            label="Search"
+                            InputProps={{
+                                startAdornment: (
+                                    <InputAdornment>
+                                        <IconButton>
+                                            <SearchIcon />
+                                        </IconButton>
+                                    </InputAdornment>
+                                )
+                            }}
+                            type='search'
+                            variant='outlined'
+                            onChange={(e) => handleSearchInputchange(e)}
+                            value={searchInput}
+                        />
+                    </div>
+                    <div>
                         <Button
                             color='primary'
                             variant='contained'
                             style={{ textTransform: 'unset' }}
-                            onClick={() => history.push('/layout/PersonalDetails')}
+                            onClick={() => {
+                                history.push('/layout/PersonalDetails');
+                                onCancel();
+                            }}
                         >+ New User</Button>
                     </div>
                 </div>
@@ -119,6 +142,7 @@ const TableLayout = (props) => {
                     className='-striped -highlight'
                     minRows={0}
                     onSortedChange={(props) => handleSortChangeStyle(props)}
+                    showPagination={false}
                 />
             </div>
         </div>
@@ -133,7 +157,8 @@ const mapStateToProps = (state) => {
 
 const mapDispatchToProps = (dispatch) => {
     return bindActionCreators({
-        onChange: app_onChange
+        onChange: app_onChange,
+        onCancel: onCancel
     }, dispatch)
 }
 

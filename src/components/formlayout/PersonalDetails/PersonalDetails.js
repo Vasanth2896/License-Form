@@ -204,7 +204,7 @@ const PersonalDetails = (props) => {
                                 id="tags-standard"
                                 value={personalDetails.preferredLanguage}
                                 options={languages}
-                                getOptionLabel={language => language}
+                                getOptionLabel={language => language.name}
                                 onChange={(onTagsChange)}
                                 renderInput={params => (
                                     <TextField

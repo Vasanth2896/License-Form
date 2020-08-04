@@ -1,6 +1,11 @@
 .tableLayoutContainer {
   margin: 0px 30px;
 
+ 
+  .MuiOutlinedInput-input {
+    padding: 9.5px 14px;
+  }
+
   .tableLayoutHeader {
     display: flex;
     align-items: center;
@@ -12,11 +17,16 @@
     display: flex;
     align-items: center;
   }
-   
-  .actionsContainer{
+
+  .actionsContainer {
     display: none;
-    justify-content: center;
-    cursor: pointer;
+  }
+
+  .searchbarContainer {
+    display: flex;
+    align-items: center;
+    width: 26em;
+    justify-content: space-between;
   }
 
   .ReactTable {
@@ -24,6 +34,12 @@
       background: #80808040 !important;
       box-shadow: unset !important;
       height: 50px;
+    }
+
+    .rt-tbody .rt-tr-group:hover .actionsContainer {
+      display: flex;
+      justify-content: center;
+      cursor: pointer;
     }
 
     .rt-tr {
@@ -67,12 +83,9 @@
     .rt-tr.-even {
       background: aliceblue;
     }
-
-}
+  }
 }
 
 .ReactTable.-striped .rt-tr.-odd {
   background: white !important;
 }
-
-

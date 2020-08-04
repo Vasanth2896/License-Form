@@ -1,17 +1,17 @@
 import React, { useState, useEffect } from 'react';
 import { Container, Grid } from "@material-ui/core";
-import { Stepper, Step, StepButton } from '@material-ui/core/';
 import FormFooter from './Formfooter/FormFooter';
 import PersonalDetails from './PersonalDetails/PersonalDetails';
 import ProfessionalDetails from './ProfessionalDetails/ProfessionalDetails';
 import AddressDetails from './AddressDetails/AddressDetails';
-import { Route, Switch, useHistory, Redirect } from "react-router-dom";
+import { Route, Switch, Redirect } from "react-router-dom";
 import { makeStyles } from '@material-ui/core/styles';
 import { connect } from 'react-redux';
 import _ from 'lodash'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faArrowLeft } from '@fortawesome/free-solid-svg-icons'
 import './FormLayout.scss'
+import NavigationStepper from '../common/NavigationStepper';
 
 const useStyles = makeStyles((theme) => ({
     root: {
@@ -20,9 +20,8 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 const FormLayout = (props) => {
-    const { state } = props;
+    const { state,history } = props;
     const { student, professional, personalDetails, addressDetails, professionalDetailToggle, personalDetailError } = state;
-    const history = useHistory();
     const classes = useStyles();
     const [activeStep, setActiveStep] = useState(0);
     const [completed, setCompleted] = useState({});
@@ -110,15 +109,17 @@ const FormLayout = (props) => {
         setCompleted({ ...newCompleted });
     };
 
+    // useEffect(() => {
+    //     setErrorFree(newErrorFree);
+    // }, [newErrorFree]);
+
+    // useEffect(() => {
+    //     handleComplete(Object.values(addressDetails).every(detail => detail !== ''), 1);
+    // }, [addressDetails]);
+
     useEffect(() => {
         setErrorFree(newErrorFree);
-    }, [newErrorFree]);
-
-    useEffect(() => {
         handleComplete(Object.values(addressDetails).every(detail => detail !== ''), 1);
-    }, [addressDetails]);
-
-    useEffect(() => {
         if (professionalDetailToggle === 'student' || professionalDetailToggle === 'professional') {
             handleComplete(Object.values(state[professionalDetailToggle]).every(detail => detail !== ''), 2);
         }
@@ -130,7 +131,7 @@ const FormLayout = (props) => {
                 handleComplete(false, 2);
             }
         }
-    }, [professional, student, professionalDetailToggle]);
+    }, [professional, student, professionalDetailToggle, addressDetails, newErrorFree]);
 
     const handleNext = () => {
         setActiveStep((prevActiveStep) => prevActiveStep + 1);
@@ -150,21 +151,20 @@ const FormLayout = (props) => {
     return (
         <div >
             <Container style={{ height: '100vh' }}>
-                <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-evenly', width: '25%' }}>
+                <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-evenly', width: '18%' ,marginBottom:'20px' }}>
                     <FontAwesomeIcon icon={faArrowLeft} onClick={backButtonNavigation} style={{ cursor: 'pointer' }} />
-                    <h2>Individual User</h2>
+                    <h3>Individual User</h3>
                 </div>
                 <Grid container spacing={7}>
                     <Grid item xs={3} style={{ cursor: errorFree ? 'not-allowed' : 'default' }} >
-                        <Stepper elevation={2} className={classes.root} activeStep={activeStep} nonLinear orientation="vertical">
-                            {steps.map((step) => ( // step.id step.index
-                                <Step key={step.id}>
-                                    <StepButton onClick={() => handleStep(step.id)} completed={completed[step.id]} disabled={errorFree} >
-                                        {step.name}
-                                    </StepButton>
-                                </Step>
-                            ))}
-                        </Stepper>
+                        <NavigationStepper
+                            stepperSteps={steps}
+                            stepperClassname={classes.root}
+                            activeStep={activeStep}
+                            handleStep={handleStep}
+                            completed={completed}
+                            disabled={errorFree}
+                        />
                     </Grid>
                     <Grid item xs={9}>
                         <div>

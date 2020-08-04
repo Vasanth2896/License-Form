@@ -1,0 +1,9 @@
+.actionsContainer{
+    display: flex;
+    justify-content: center;
+    cursor: pointer;
+}
+
+.actionContainer:hover{
+    background-color: yellow;
+}

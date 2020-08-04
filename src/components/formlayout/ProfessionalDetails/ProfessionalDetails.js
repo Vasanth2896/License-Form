@@ -8,13 +8,27 @@ import { bindActionCreators } from 'redux';
 import { app_onChange } from '../../../store/appActions'
 import _ from 'lodash'
 import { professionalDetailRadioButtonStyles } from '../../common/commonStyles'
+import AlertBox from './AlertBox/AlertBox';
 
 const ProfessionalDetails = (props) => {
     const classes = professionalDetailRadioButtonStyles();
     const { state, onChange } = props;
     const currentState = _.cloneDeep(state);
-    const { professional, student, professionalDetailToggle } = currentState;
+    const { professional, student, professionalDetailToggle, editableIndex } = currentState;
     const [professionalValue, setProfessionalValue] = useState(professionalDetailToggle);
+    const [open, setOpen] = useState(false);
+
+    const handleClickOpen = () => {
+        setOpen(true);
+    };
+
+    const handleClose = () => {
+        setOpen(false);
+    };
+
+    const handleOk = () => {
+        setOpen(false)
+    }
 
     const handleRadioChange = (e) => {
         setProfessionalValue(e.target.value);
@@ -41,6 +55,7 @@ const ProfessionalDetails = (props) => {
         }
     }
 
+
     return (
         <div>
             <Grid container spacing={3}>
@@ -49,7 +64,7 @@ const ProfessionalDetails = (props) => {
                     xs={12}
                 >
                     <Paper elevation={2} className={classes.professionalRadioButtonContainer}>
-                        <RadioGroup aria-label="professionals" name="professionals" onChange={(e) => handleRadioChange(e)} value={professionalValue} className={classes.professionalRadioButtons} row>
+                        <RadioGroup aria-label="professionals" name="professionals" onChange={(e) => { handleRadioChange(e) }} value={professionalValue} className={classes.professionalRadioButtons} row>
                             <FormControlLabel value="student" control={<Radio color='primary' />} label="Student" />
                             <FormControlLabel value="professional" control={<Radio color='primary' />} label="Professional" />
                             <FormControlLabel value="housewives" control={<Radio color='primary' />} label="Housewives" />
@@ -63,6 +78,7 @@ const ProfessionalDetails = (props) => {
                     {professionalValue === 'student' && <StudentForm />}
                     {professionalValue === 'professional' && <ProfessionalForm />}
                     {professionalValue === 'housewives' && <HousewivesForm />}
+                    <AlertBox open={open} handleClose={handleClose} handleClickOpen={handleClickOpen} handleOk={handleOk} professionalValue={professionalValue} />
                 </Grid>
             </Grid>
         </div>
