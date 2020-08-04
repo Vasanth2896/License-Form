@@ -1,7 +1,6 @@
 .tableLayoutContainer {
   margin: 0px 30px;
 
- 
   .MuiOutlinedInput-input {
     padding: 9.5px 14px;
   }
@@ -20,13 +19,6 @@
 
   .actionsContainer {
     display: none;
-  }
-
-  .searchbarContainer {
-    display: flex;
-    align-items: center;
-    width: 26em;
-    justify-content: space-between;
   }
 
   .ReactTable {
