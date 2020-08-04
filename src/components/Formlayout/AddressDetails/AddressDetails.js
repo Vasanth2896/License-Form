@@ -1,12 +1,9 @@
 import React from 'react';
 import {Paper, Grid, Box, TextField, Checkbox} from "@material-ui/core";
-import { connect } from 'react-redux';
 import _ from 'lodash'
 import { IndianStates } from "../../../seed/seed";
-import { bindActionCreators } from 'redux';
-import { app_onChange } from '../../../store/appActions';
-import InputSelect from "../../common/InputSelect";
-import {AddressDetailsStyles} from '../../common/commonStyles'
+import InputSelect from "../../Common/InputSelect";
+import {AddressDetailsStyles} from '../../Common/commonStyles'
 
 
 const AddressDetails = (props) => {
@@ -98,16 +95,4 @@ const AddressDetails = (props) => {
     )
 }
 
-const mapStateToProps = (state) => {
-    return {
-        state: state.appReducer
-    }
-}
-
-const mapDispatchToProps = (dispatch) => {
-    return bindActionCreators({
-        onChange: app_onChange
-    }, dispatch)
-}
-
-export default connect(mapStateToProps, mapDispatchToProps)(AddressDetails);
+export default AddressDetails;

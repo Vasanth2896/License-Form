@@ -1,20 +1,17 @@
 import React from 'react';
 import './PersonalDetails.scss'
 import {
-    TextField, Paper, Grid, Box, RadioGroup, FormLabel, FormControlLabel, Radio, makeStyles, withStyles,
+    TextField, Paper, Grid, Box, RadioGroup, FormLabel, FormControlLabel, Radio, withStyles
 } from '@material-ui/core';
 import { KeyboardDatePicker, MuiPickersUtilsProvider } from "@material-ui/pickers";
 import MomentUtils from "@date-io/moment";
 import moment from "moment";
 import { Autocomplete } from "@material-ui/lab";
-import { connect } from 'react-redux';
-import { bindActionCreators } from 'redux';
 import _ from 'lodash'
-import { app_onChange } from '../../../store/appActions';
-import InputSelect from '../../common/InputSelect';
+import InputSelect from '../../Common/InputSelect';
 import { languages } from '../../../seed/seed'
-import CheckboxGroup from '../../common/CheckboxGroup';
-import { personalDetailStyles  } from "../../common/commonStyles";
+import CheckboxGroup from '../../Common/CheckboxGroup';
+import { personalDetailStyles } from "../../Common/commonStyles";
 
 const CustomAutocomplete = withStyles({
     tag: {
@@ -114,7 +111,7 @@ const PersonalDetails = (props) => {
                                 label='User name'
                                 onChange={(e) => handleChange(e)}
                                 name='username'
-                                value={personalDetails.username}
+                                value={personalDetails.username || ''}
                                 error={personalDetailError.usernameError}
                                 helperText={personalDetailError.usernameHelperText}
                                 required
@@ -124,7 +121,7 @@ const PersonalDetails = (props) => {
                     <Grid item xs={6}>
                         <Box className={classes.genderGroupContainer}>
                             <FormLabel component="legend">Gender</FormLabel>
-                            <RadioGroup aria-label="gender" name="gender" value={personalDetails.gender} className={classes.genderContainer} onChange={(e) => handleChange(e)} row>
+                            <RadioGroup aria-label="gender" name="gender" value={personalDetails.gender || 'male'} className={classes.genderContainer} onChange={(e) => handleChange(e)} row>
                                 <FormControlLabel value="male" control={<Radio color='primary' />} label="Male" />
                                 <FormControlLabel value='female' control={<Radio color='primary' />} label="Female" />
                             </RadioGroup>
@@ -244,16 +241,5 @@ const PersonalDetails = (props) => {
     )
 }
 
-const mapStateToProps = (state) => {
-    return {
-        state: state.appReducer
-    }
-}
 
-const mapDispatchToProps = (dispatch) => {
-    return bindActionCreators({
-        onChange: app_onChange
-    }, dispatch)
-}
-
-export default connect(mapStateToProps, mapDispatchToProps)(PersonalDetails);
+export default PersonalDetails;

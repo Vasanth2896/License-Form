@@ -1,18 +1,13 @@
 import React, { useState } from 'react';
 import { Menu, MenuItem } from "@material-ui/core";
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faEllipsisH } from '@fortawesome/free-solid-svg-icons'
-import { connect } from 'react-redux';
-import { bindActionCreators } from 'redux';
-import { onDelete, onEdit } from '../../../store/appActions'
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faEllipsisH } from '@fortawesome/free-solid-svg-icons';
 import { useHistory } from 'react-router-dom';
-import './ActionComponent.scss';
-
 
 const ActionComponent = (props) => {
     const history = useHistory();
 
-    const { index, value, onDelete, onEdit } = props;
+    const { index, value, onDelete, onEdit} = props;
 
     const [anchorEl, setAnchorEl] = useState(null);
 
@@ -28,6 +23,7 @@ const ActionComponent = (props) => {
 
     const handleDelete = (index) => {
         onDelete(index);
+
         setAnchorEl(null);
     }
 
@@ -53,12 +49,4 @@ const ActionComponent = (props) => {
 
 }
 
-
-const mapDispatchToProps = (dispatch) => {
-    return bindActionCreators({
-        onDelete: onDelete,
-        onEdit: onEdit
-    }, dispatch)
-}
-
-export default connect(null, mapDispatchToProps)(ActionComponent)
+export default ActionComponent;

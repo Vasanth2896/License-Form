@@ -1,5 +1,4 @@
 import React from 'react';
-import './TableHeaderContent.scss'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faSortAmountDown } from '@fortawesome/free-solid-svg-icons';
 

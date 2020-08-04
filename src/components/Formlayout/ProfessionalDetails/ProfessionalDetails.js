@@ -1,14 +1,14 @@
 import React, { useState } from 'react';
 import { Grid, Paper, RadioGroup, Radio, FormControlLabel } from "@material-ui/core";
-import StudentForm from './StudentForm/StudentForm';
-import ProfessionalForm from './ProfessionalForm/ProfessionalForm';
-import HousewivesForm from './HousewivesForm/HousewivesForm';
+import StudentForm from './StudentForm';
+import ProfessionalForm from './ProfessionalForm';
+import HousewivesForm from './HousewivesForm';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import { app_onChange } from '../../../store/appActions'
 import _ from 'lodash'
-import { professionalDetailRadioButtonStyles } from '../../common/commonStyles'
-import AlertBox from './AlertBox/AlertBox';
+import { professionalDetailRadioButtonStyles } from '../../Common/commonStyles'
+import AlertBox from './AlertBox';
 
 const ProfessionalDetails = (props) => {
     const classes = professionalDetailRadioButtonStyles();
@@ -17,6 +17,8 @@ const ProfessionalDetails = (props) => {
     const { professional, student, professionalDetailToggle, editableIndex } = currentState;
     const [professionalValue, setProfessionalValue] = useState(professionalDetailToggle);
     const [open, setOpen] = useState(false);
+    const [editProfessionalValue, setEditProfessionalvalue] = useState(null);
+
 
     const handleClickOpen = () => {
         setOpen(true);
@@ -27,12 +29,26 @@ const ProfessionalDetails = (props) => {
     };
 
     const handleOk = () => {
-        setOpen(false)
+        setProfessionalValue(editProfessionalValue);
+        onChange('professionalDetailToggle', editProfessionalValue);
+        dataClearance();
+        setOpen(false);
     }
 
     const handleRadioChange = (e) => {
-        setProfessionalValue(e.target.value);
-        onChange('professionalDetailToggle', e.target.value);
+        if (editableIndex) {
+            handleClickOpen();
+            setEditProfessionalvalue(e.target.value);
+        }
+        else {
+            setEditProfessionalvalue(null);
+            setProfessionalValue(e.target.value);
+            onChange('professionalDetailToggle', e.target.value);
+            dataClearance();
+        }
+    }
+
+    function dataClearance() {
         if (professionalValue === 'student') {
             Object.assign(student, {
                 currentQualification: '',
@@ -55,7 +71,6 @@ const ProfessionalDetails = (props) => {
         }
     }
 
-
     return (
         <div>
             <Grid container spacing={3}>
@@ -75,9 +90,9 @@ const ProfessionalDetails = (props) => {
                     item
                     xs={12}
                 >
-                    {professionalValue === 'student' && <StudentForm />}
-                    {professionalValue === 'professional' && <ProfessionalForm />}
-                    {professionalValue === 'housewives' && <HousewivesForm />}
+                    {professionalValue === 'student' && <StudentForm {...props} />}
+                    {professionalValue === 'professional' && <ProfessionalForm  {...props}/>}
+                    {professionalValue === 'housewives' && <HousewivesForm   {...props}/>}
                     <AlertBox open={open} handleClose={handleClose} handleClickOpen={handleClickOpen} handleOk={handleOk} professionalValue={professionalValue} />
                 </Grid>
             </Grid>

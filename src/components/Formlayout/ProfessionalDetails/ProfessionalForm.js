@@ -1,12 +1,9 @@
 import React from 'react';
-import { Paper, makeStyles, Grid } from "@material-ui/core";
-import { connect } from 'react-redux';
+import { Paper, Grid } from "@material-ui/core";
 import _ from 'lodash'
-import { bindActionCreators } from 'redux';
-import { app_onChange } from '../../../../store/appActions'
-import InputSelect from '../../../common/InputSelect'
-import { professionalDetailsFormStyles} from '../../../common/commonStyles'
-import { professionalLevelCategory, professionalSalaryLevel } from '../../../../seed/seed';
+import InputSelect from '../../Common/InputSelect'
+import { professionalDetailsFormStyles} from '../../Common/commonStyles'
+import { professionalLevelCategory, professionalSalaryLevel } from '../../../seed/seed';
 
 const ProfessionalForm = (props) => {
     const classes = professionalDetailsFormStyles();
@@ -49,18 +46,5 @@ const ProfessionalForm = (props) => {
     )
 }
 
-const mapStateToProps = (state) => {
-    return {
-        state: state.appReducer
-    }
-}
-
-const mapDispatchToProps = (dispatch) => {
-    return bindActionCreators({
-        onChange: app_onChange
-    }, dispatch)
-}
-
-
-export default connect(mapStateToProps, mapDispatchToProps)(ProfessionalForm);
+export default ProfessionalForm;
 

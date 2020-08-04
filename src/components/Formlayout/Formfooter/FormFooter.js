@@ -1,9 +1,9 @@
 import React from 'react';
 import './FormFooter.scss'
 import { Route, withRouter } from 'react-router-dom';
-import PersonalDetailFooter from './PersonalDetailFooter/PersonalDetailFooter';
-import ProfessionalDetailFooter from './ProfessionalDetailFooter/ProfessionalDetailFooter';
-import AddressDetailFooter from './AddressDetailFooter/AddressDetailFooter';
+import PersonalDetailFooter from './PersonalDetailFooter';
+import ProfessionalDetailFooter from './ProfessionalDetailFooter';
+import AddressDetailFooter from './AddressDetailFooter';
 
 const FormFooter = (props) => {
     return (

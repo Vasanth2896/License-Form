@@ -1,8 +1,5 @@
 import React from "react";
 import { Button } from "@material-ui/core";
-import { connect } from 'react-redux';
-import { bindActionCreators } from 'redux';
-import { errorValidation, onSave } from '../../../../store/appActions'
 
 const ProfessionalDetailFooter = (props) => {
 
@@ -38,17 +35,4 @@ const ProfessionalDetailFooter = (props) => {
     )
 }
 
-const mapStateToProps = (state) => {
-    return {
-        state: state.appReducer
-    }
-}
-
-const mapDispatchToProps = (dispatch) => {
-    return bindActionCreators({
-        errorValidation: errorValidation,
-        onSave: onSave
-    }, dispatch)
-}
-
-export default connect(mapStateToProps, mapDispatchToProps)(ProfessionalDetailFooter);
+export default ProfessionalDetailFooter;

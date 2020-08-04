@@ -1,12 +1,9 @@
 import React from 'react';
 import { Paper, Grid, Box, TextField } from "@material-ui/core";
-import { connect } from 'react-redux';
 import _ from 'lodash'
-import { bindActionCreators } from 'redux';
-import { app_onChange } from '../../../../store/appActions';
-import InputSelect from '../../../common/InputSelect';
-import { IndianStates, currentQualificationList } from "../../../../seed/seed";
-import { professionalDetailsFormStyles } from '../../../common/commonStyles'
+import InputSelect from '../../Common/InputSelect';
+import { IndianStates, currentQualificationList } from "../../../seed/seed";
+import { professionalDetailsFormStyles } from '../../Common/commonStyles'
 
 const StudentForm = (props) => {
     const { state, onChange } = props;
@@ -120,16 +117,4 @@ const StudentForm = (props) => {
     )
 }
 
-const mapStateToProps = (state) => {
-    return {
-        state: state.appReducer
-    }
-}
-
-const mapDispatchToProps = (dispatch) => {
-    return bindActionCreators({
-        onChange: app_onChange
-    }, dispatch)
-}
-
-export default connect(mapStateToProps, mapDispatchToProps)(StudentForm);
+export default StudentForm;

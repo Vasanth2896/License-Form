@@ -1,7 +1,6 @@
 import React from 'react';
 import { Button, TextField, InputAdornment, IconButton } from "@material-ui/core";
 import SearchIcon from '@material-ui/icons/Search';
-import './SearchBox.scss'
 
 const SearchBox = (props) => {
     const { handleSearchInputchange, searchInput, history, onCancel } = props
@@ -10,7 +9,7 @@ const SearchBox = (props) => {
         <div className='searchbarContainer'>
             <div>
                 <TextField
-                    label="Search"
+                    placeholder="Search"
                     InputProps={{
                         startAdornment: (
                             <InputAdornment>

@@ -1,8 +1,5 @@
 import React from 'react';
 import { Button } from "@material-ui/core";
-import { connect } from 'react-redux';
-import { bindActionCreators } from 'redux';
-import { errorValidation,onCancel } from '../../../../store/appActions'
 
 const PersonalDetailFooter = (props) => {
 
@@ -34,19 +31,6 @@ const PersonalDetailFooter = (props) => {
     )
 }
 
-const mapStateToProps = (state) => {
-    return {
-        state: state.appReducer
-    }
-}
-
-const mapDispatchToProps = (dispatch) => {
-    return bindActionCreators({
-        errorValidation: errorValidation,
-        onCancel: onCancel
-    }, dispatch)
-}
-
-export default connect(mapStateToProps, mapDispatchToProps)(PersonalDetailFooter);
+export default PersonalDetailFooter;
 
 

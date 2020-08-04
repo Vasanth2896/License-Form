@@ -7,11 +7,16 @@ import AddressDetails from './AddressDetails/AddressDetails';
 import { Route, Switch, Redirect } from "react-router-dom";
 import { makeStyles } from '@material-ui/core/styles';
 import { connect } from 'react-redux';
-import _ from 'lodash'
+import { bindActionCreators } from 'redux';
+import * as appActions from '../../store/appActions'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faArrowLeft } from '@fortawesome/free-solid-svg-icons'
+import NavigationStepper from '../Common/NavigationStepper';
 import './FormLayout.scss'
-import NavigationStepper from '../common/NavigationStepper';
+import _ from 'lodash';
+
+
+
 
 const useStyles = makeStyles((theme) => ({
     root: {
@@ -20,7 +25,7 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 const FormLayout = (props) => {
-    const { state,history } = props;
+    const { state, history } = props;
     const { student, professional, personalDetails, addressDetails, professionalDetailToggle, personalDetailError } = state;
     const classes = useStyles();
     const [activeStep, setActiveStep] = useState(0);
@@ -46,61 +51,62 @@ const FormLayout = (props) => {
         }
     ]
 
-    const data = _.cloneDeep(personalDetails);
-    let test = false, productknowledgecheckflag = false, dateFlag = false, testingFlag = false, optionalFlag = false;
-    let testing = [];
+    // const data = _.cloneDeep(personalDetails);
+    // let test = false, productknowledgecheckflag = false, dateFlag = false, testingFlag = false, optionalFlag = false;
+    // let testing = [];
 
-    const dummy = (data) => {
+    // const dummy = (data) => {
 
-        for (let key in data) {
-            if (typeof (data[key]) === 'object') {
-                if (Array.isArray(data[key])) {
-                    test = data[key].length > 0 ? true : false
-                }
-                else {
-                    if (key === 'dateOfBirth') {
-                        dateFlag = data[key] !== null ? true : false;
-                    }
-                    else {
-                        productknowledgecheckflag = Object.values(data[key]).some(detail => detail)
-                    }
-                }
-            }
-            else {
-                if (key === 'other' && data['productKnowledge'].otherCheck) {
-                    optionalFlag = data[key] !== '' ? true : false;
-                } else if (key !== 'other') {
-                    testing.push(data[key]);
-                    testingFlag = testing.every(detail => detail !== '');
-                }
-            }
+    //     for (let key in data) {
+    //         if (typeof (data[key]) === 'object') {
+    //             if (Array.isArray(data[key])) {
+    //                 test = data[key].length > 0 
+    //             }
+    //             else {
+    //                 if (key === 'dateOfBirth') {
+    //                     dateFlag = data[key] !== null 
+    //                 }
+    //                 else {
+    //                     productknowledgecheckflag = Object.values(data[key]).some(detail => detail)
+    //                 }
+    //             }
+    //         }
+    //         else {
+    //             if (key === 'other' && data['productKnowledge'].otherCheck) {
+    //                 optionalFlag = data[key] !== '' ? true : false;
+    //             } else if (key !== 'other') {
+    //                 testing.push(data[key]);
+    //                 testingFlag = testing.every(detail => detail !== '');
+    //             }
+    //         }
+    //     }
+    // }
+
+    // dummy(data);
+    // const mainFlag = [test, productknowledgecheckflag, dateFlag, testingFlag].every(flag => flag);
+
+    // useEffect(() => {
+
+    //     if (mainFlag && !optionalFlag) {
+    //         handleComplete(mainFlag, 0)
+    //     }
+    //     else if (mainFlag && optionalFlag) {
+    //         handleComplete(mainFlag, 0);
+    //     }
+    //     else {
+    //         handleComplete(false, 0);
+    //     }
+    // }, [mainFlag, optionalFlag])
+
+    
+
+    const backButtonNavigation = (stepItem) => {
+        if (stepItem.id) {
+            history.push(steps[stepItem.id - 1].routePath);
+            setActiveStep(stepItem.id - 1)
         }
-    }
-
-    dummy(data);
-    const mainFlag = [test, productknowledgecheckflag, dateFlag, testingFlag].every(flag => flag);
-
-    useEffect(() => {
-
-        if (mainFlag && !optionalFlag) {
-            handleComplete(mainFlag, 0)
-        }
-        else if (mainFlag && optionalFlag) {
-            handleComplete(mainFlag, 0);
-        }
-        else {
-            handleComplete(false, 0);
-        }
-    }, [mainFlag, optionalFlag])
-
-    const backButtonNavigation = () => {
-        const dummy = ['/layout/PersonalDetails', '/layout/AddressDetails', '/layout/ProfessionalDetails'];
-        if (history.location.pathname === '/layout/PersonalDetails') {
+        else{
             history.push('/');
-        }
-        else {
-            handleStep(dummy.indexOf(dummy.find(path => path === history.location.pathname)) - 1);
-            history.push(dummy[dummy.indexOf(dummy.find(path => path === history.location.pathname)) - 1]);
         }
     }
 
@@ -109,33 +115,21 @@ const FormLayout = (props) => {
         setCompleted({ ...newCompleted });
     };
 
-    // useEffect(() => {
-    //     setErrorFree(newErrorFree);
-    // }, [newErrorFree]);
-
-    // useEffect(() => {
-    //     handleComplete(Object.values(addressDetails).every(detail => detail !== ''), 1);
-    // }, [addressDetails]);
-
     useEffect(() => {
         setErrorFree(newErrorFree);
         handleComplete(Object.values(addressDetails).every(detail => detail !== ''), 1);
-        if (professionalDetailToggle === 'student' || professionalDetailToggle === 'professional') {
-            handleComplete(Object.values(state[professionalDetailToggle]).every(detail => detail !== ''), 2);
+        if (professionalDetailToggle === 'housewives') {
+            handleComplete(true, 2);
         }
         else {
-            if (professionalDetailToggle === 'housewives') {
-                handleComplete(true, 2);
-            }
-            else {
-                handleComplete(false, 2);
-            }
+            handleComplete(Object.values(state[professionalDetailToggle]).every(detail => detail !== ''), 2);
         }
+
     }, [professional, student, professionalDetailToggle, addressDetails, newErrorFree]);
 
     const handleNext = () => {
         setActiveStep((prevActiveStep) => prevActiveStep + 1);
-        history.push(steps[activeStep + 1].routePath)
+        history.push(steps[activeStep + 1].routePath);
     };
 
     const handleBack = () => {
@@ -151,8 +145,8 @@ const FormLayout = (props) => {
     return (
         <div >
             <Container style={{ height: '100vh' }}>
-                <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-evenly', width: '18%' ,marginBottom:'20px' }}>
-                    <FontAwesomeIcon icon={faArrowLeft} onClick={backButtonNavigation} style={{ cursor: 'pointer' }} />
+                <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-evenly', width: '18%', marginBottom: '20px' }}>
+                    <FontAwesomeIcon icon={faArrowLeft} onClick={() => backButtonNavigation(steps[activeStep])} style={{ cursor: 'pointer' }} />
                     <h3>Individual User</h3>
                 </div>
                 <Grid container spacing={7}>
@@ -170,15 +164,15 @@ const FormLayout = (props) => {
                         <div>
                             <Redirect from='/' to={'/layout/PersonalDetails'} />
                             <Switch>
-                                <Route path={'/layout/PersonalDetails'} render={() => <PersonalDetails />} />
-                                <Route path={'/layout/AddressDetails'} render={() => <AddressDetails />} />
-                                <Route path={'/layout/ProfessionalDetails'} render={() => <ProfessionalDetails />} />
+                                <Route path={'/layout/PersonalDetails'} render={() => <PersonalDetails {...props} />} />
+                                <Route path={'/layout/AddressDetails'} render={() => <AddressDetails {...props} />} />
+                                <Route path={'/layout/ProfessionalDetails'} render={() => <ProfessionalDetails {...props} />} />
                             </Switch>
                         </div>
                     </Grid>
                 </Grid>
             </Container>
-            <FormFooter handleNext={handleNext} handleBack={handleBack} setActiveStep={setActiveStep} />
+            <FormFooter handleNext={handleNext} handleBack={handleBack} setActiveStep={setActiveStep} {...props} />
         </div >
     )
 }
@@ -189,4 +183,13 @@ const mapStateToProps = (state) => {
     }
 }
 
-export default connect(mapStateToProps)(FormLayout);
+const mapDispatchToProps = (dispatch) => {
+    return bindActionCreators({
+        errorValidation: appActions.errorValidation,
+        onCancel: appActions.onCancel,
+        onSave: appActions.onSave,
+        onChange: appActions.app_onChange
+    }, dispatch)
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(FormLayout);

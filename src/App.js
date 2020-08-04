@@ -1,24 +1,11 @@
-import React, { useEffect } from 'react';
-import FormLayout from './components/formlayout/FormLayout';
+import React from 'react';
+import FormLayout from './components/Formlayout/FormLayout';
 import TableLayout from './components/TableLayout/TableLayout';
 import { Route } from 'react-router-dom'
-import Navbar from './components/common/Navbar';
-import { bindActionCreators } from 'redux';
-import { connect } from 'react-redux';
-import { app_onChange } from "./store/appActions";
+import Navbar from './components/Common/Navbar';
 
-function App(props) {
-  // const { onChange } = props;
-
-  // useEffect(() => {
-  //   onChange('addressDetails', {
-  //     communicationAddress: 'dummy3',
-  //     district: 'Salem',
-  //     state: 'Tamil Nadu',
-  //     country: 'India',
-  //     pincode: '123123',
-  //   })
-  // })
+function App() {
+  
   return (
     <div className="App">
       <Navbar />
@@ -28,13 +15,4 @@ function App(props) {
   );
 }
 
-
-const mapDispatchToProps = (dispatch) => {
-  return bindActionCreators({
-    onChange: app_onChange
-  }, dispatch)
-}
-
-
-
-export default connect(null, mapDispatchToProps)(App);
+export default App;

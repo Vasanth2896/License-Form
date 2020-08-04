@@ -3,16 +3,17 @@ import './TableLayout.scss';
 import ReactTable from 'react-table-v6'
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
-import { app_onChange, onCancel } from '../../store/appActions';
+import { app_onChange, onCancel, onEdit, onDelete } from '../../store/appActions';
 import _ from 'lodash';
-import TableHeaderContent from "./TableHeaderContent/TableHeaderContent";
-import ActionComponent from "./ActionComponent/ActionComponent";
-import SearchBox from "./SearchBox/SearchBox";
+import TableHeaderContent from "./TableHeaderContent";
+import ActionComponent from "./ActionComponent";
+import SearchBox from "./SearchBox";
 
 const TableLayout = (props) => {
-    const { history, state, onCancel } = props;
+    const { history, state, onCancel, onEdit, onDelete } = props;
     const currentState = _.cloneDeep(state);
     const { userList } = currentState;
+
     const [userTableState, setUserTableState] = useState({
         filteredData: userList,
         searchInput: '',
@@ -27,16 +28,19 @@ const TableLayout = (props) => {
     const { filteredData,
         searchInput, usernameSort, mailIdSort, mobileNumberSort,
         professionSort, addressSort, stateSort, districtSort } = userTableState;
-    let newFilteredData;
 
-    console.log(userTableState);
+        console.log(filteredData);
+
+
+    useEffect(() => {
+        setUserTableState({ ...userTableState, filteredData: userList });
+    }, [state])
 
     const handleSortChangeStyle = (props) => {
         if (props[0].id !== '') {
             const sortStyle = { ...userTableState };
             sortStyle[`${props[0].id + 'Sort'}`] = props[0].desc;
             setUserTableState({ ...sortStyle })
-
         }
     }
 
@@ -46,19 +50,13 @@ const TableLayout = (props) => {
     }
 
     useEffect(() => {
-        if (searchInput) {
-            globalSearchFilter();
-        }
-        else {
-            setUserTableState({ ...userTableState, filteredData: userList });
-        }
-
-    }, [searchInput]);
+        searchInput ? globalSearchFilter() : setUserTableState({ ...userTableState, filteredData: userList });
+    }, [searchInput,state]);
 
 
     const globalSearchFilter = () => {
-        if (searchInput.length) {
-            newFilteredData = userList.filter(user => {
+        if (searchInput) {
+            let newFilteredData = userList.filter(user => {
                 return (
                     user.personalDetails.username.toLowerCase().includes(searchInput.toLowerCase()) ||
                     user.personalDetails.mailId.toLowerCase().includes(searchInput.toLowerCase()) ||
@@ -69,12 +67,10 @@ const TableLayout = (props) => {
                     user.addressDetails.state.toLowerCase().includes(searchInput.toLowerCase())
                 );
             });
-            if (newFilteredData.length) {
-                setUserTableState({ ...userTableState, filteredData: newFilteredData })
-            }
-            else if (!newFilteredData.length) {
-                setUserTableState({ ...userTableState, filteredData: [] });
-            }
+            console.log(newFilteredData);
+            newFilteredData.length ?
+                setUserTableState({ ...userTableState, filteredData: newFilteredData }) : setUserTableState({ ...userTableState, filteredData: [] });
+
         }
     }
 
@@ -120,7 +116,12 @@ const TableLayout = (props) => {
             Cell: ({ value, index }) => {
                 return (
                     <div className='actionsContainer'  >
-                        <ActionComponent value={value} index={index} />
+                        <ActionComponent
+                            value={value}
+                            index={index}
+                            onEdit={onEdit}
+                            onDelete={onDelete}
+                        />
                     </div>
                 )
             },
@@ -134,7 +135,7 @@ const TableLayout = (props) => {
             <div className='tableLayoutHeader' >
                 <div className='userListHeader'>
                     <h3>Individual Users</h3>
-                    <p>({userList.length})</p>
+                    <h3>&nbsp;({userList.length})</h3>
                 </div>
                 <SearchBox
                     handleSearchInputchange={handleSearchInputchange}
@@ -143,7 +144,7 @@ const TableLayout = (props) => {
                     onCancel={onCancel}
                 />
             </div>
-            {!filteredData.length || !userList.length ? <div><h1>There is no story</h1></div> :
+            {!filteredData.length || !userList.length ? <div><h1>There is no user</h1></div> :
                 <div>
                     <ReactTable
                         data={filteredData}
@@ -168,7 +169,9 @@ const mapStateToProps = (state) => {
 const mapDispatchToProps = (dispatch) => {
     return bindActionCreators({
         onChange: app_onChange,
-        onCancel: onCancel
+        onCancel: onCancel,
+        onEdit: onEdit,
+        onDelete: onDelete
     }, dispatch)
 }
 

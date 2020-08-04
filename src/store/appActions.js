@@ -60,7 +60,7 @@ export const initialState = {
                 age: '19',
                 mailId: 'dum@gmail.com',
                 mobileNumber: '123123123',
-                motherTongue: 'Konkani',
+                motherTongue: 'Tamil',
                 preferredLanguage: ['Tamil', 'Telugu'],
                 productKnowledge: {
                     newspaperCheck: true,
@@ -104,7 +104,7 @@ export const initialState = {
                 age: '20',
                 mailId: 'dummy2@gmail.com',
                 mobileNumber: '123123123',
-                motherTongue: 'tamil',
+                motherTongue: 'Tamil',
                 preferredLanguage: ['Telugu'],
                 productKnowledge: {
                     newspaperCheck: true,

@@ -5,11 +5,38 @@
     padding: 9.5px 14px;
   }
 
+  .searchbarContainer {
+    display: flex;
+    align-items: center;
+    width: 26em;
+    justify-content: space-between;
+
+    .MuiFormControl-root.MuiTextField-root {
+      background: gainsboro;
+    }
+
+    .MuiIconButton-root {
+      padding: unset;
+    }
+
+    .MuiIconButton-label {
+      color: black;
+    }
+  }
+
   .tableLayoutHeader {
     display: flex;
     align-items: center;
     justify-content: space-between;
     margin-bottom: 20px;
+  }
+
+  .tableHeaderContent {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    width: 100%;
+    pointer-events: none;
   }
 
   .userListHeader {

@@ -1,6 +1,6 @@
 import React from 'react';
 import { Paper } from "@material-ui/core";
-import { professionalDetailsFormStyles } from '../../../common/commonStyles'
+import { professionalDetailsFormStyles } from '../../Common/commonStyles'
 
 const HousewivesForm = () => {
     const classes = professionalDetailsFormStyles();
