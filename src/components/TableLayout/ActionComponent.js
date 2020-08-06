@@ -7,7 +7,7 @@ import { useHistory } from 'react-router-dom';
 const ActionComponent = (props) => {
     const history = useHistory();
 
-    const { index, value, onDelete, onEdit} = props;
+    const { index, value, onDelete, onEdit, userTableState, setUserTableState } = props;
 
     const [anchorEl, setAnchorEl] = useState(null);
 
@@ -21,8 +21,9 @@ const ActionComponent = (props) => {
         setAnchorEl(null);
     }
 
-    const handleDelete = (index) => {
-        onDelete(index);
+    const handleDelete = (value) => {
+        onDelete(value);
+        setUserTableState({ ...userTableState, searchInput: '' })
         setAnchorEl(null);
     }
 
@@ -41,7 +42,7 @@ const ActionComponent = (props) => {
                 onClose={handleMenuClose}
             >
                 <MenuItem onClick={() => handleEdit(index, value)}>Edit user</MenuItem>
-                <MenuItem onClick={() => handleDelete(index)}>Delete user</MenuItem>
+                <MenuItem onClick={() => handleDelete(value)}>Delete user</MenuItem>
             </Menu>
         </div>
     );

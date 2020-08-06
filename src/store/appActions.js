@@ -191,7 +191,7 @@ export function errorValidation() {
 export function onCancel() {
     return (dispatch) => {
         const restoreInitialState = _.cloneDeep(initialState);
-        const { personalDetails, addressDetails, professional, student, professionalDetailToggle, editableIndex } = restoreInitialState;
+        const { personalDetails, addressDetails, professional, student, professionalDetailToggle} = restoreInitialState;
         dispatch(app_onChange('personalDetails', personalDetails));
         dispatch(app_onChange('addressDetails', addressDetails));
         dispatch(app_onChange('professional', professional));
@@ -240,10 +240,11 @@ export function onSave() {
     }
 }
 
-export function onDelete(deleteIndex) {
+export function onDelete(deleteData) {
     return (dispatch, getState) => {
+        console.log(deleteData);
         const { userList } = getState().appReducer
-        const newUserList = userList.filter(user => JSON.stringify(user) !== JSON.stringify(userList[deleteIndex]));
+        const newUserList = userList.filter(user => JSON.stringify(user) !== JSON.stringify(deleteData));
         dispatch(app_onChange('userList', newUserList));
     }
 }

@@ -29,6 +29,9 @@ const TableLayout = (props) => {
         searchInput, usernameSort, mailIdSort, mobileNumberSort,
         professionSort, addressSort, stateSort, districtSort } = userTableState;
 
+    let newFilteredData = [];
+
+
     useEffect(() => {
         setUserTableState({ ...userTableState, filteredData: userList });
     }, [state])
@@ -47,12 +50,12 @@ const TableLayout = (props) => {
 
     useEffect(() => {
         searchInput ? globalSearchFilter() : setUserTableState({ ...userTableState, filteredData: userList });
-    }, [searchInput,state]);
+    }, [searchInput, state]);
 
 
     const globalSearchFilter = () => {
         if (searchInput) {
-            let newFilteredData = userList.filter(user => {
+            newFilteredData = userList.filter(user => {
                 return (
                     user.personalDetails.username.toLowerCase().includes(searchInput.toLowerCase()) ||
                     user.personalDetails.mailId.toLowerCase().includes(searchInput.toLowerCase()) ||
@@ -116,6 +119,8 @@ const TableLayout = (props) => {
                             index={index}
                             onEdit={onEdit}
                             onDelete={onDelete}
+                            userTableState={userTableState}
+                            setUserTableState={setUserTableState}
                         />
                     </div>
                 )
