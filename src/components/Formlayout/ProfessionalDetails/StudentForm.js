@@ -77,7 +77,7 @@ const StudentForm = (props) => {
                             label='District'
                             name='district'
                             value={student.district || ''}
-                            onChange={(e) => handleChange(e)}
+                            handleChange={handleChange}
                         />
                     </Grid>
                     <Grid item xs={6}>
@@ -85,7 +85,7 @@ const StudentForm = (props) => {
                             label='Pincode'
                             name='pincode'
                             value={student.pincode || ''}
-                            onChange={(e) => handleChange(e)}
+                            handleChange={handleChange}
                         />
                     </Grid>
                 </Grid>

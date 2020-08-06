@@ -1,5 +1,6 @@
 import React from 'react';
 import { Stepper, Step, StepButton } from '@material-ui/core/';
+import './NavigationStepper.scss';
 
 const NavigationStepper = (props) => {
 

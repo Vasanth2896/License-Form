@@ -39,7 +39,7 @@ const PersonalDetails = (props) => {
     const handleChange = (e) => {
         personalDetails[e.target.name] = e.target.value
         onChange('personalDetails', personalDetails);
-        if (e.target.name === 'username' || e.target.name === 'mailId') {
+        if ((e.target.name === 'username' || e.target.name === 'mailId') && !e.target.value.toString().replace(/\s/g, '').length <= 0) {
             personalDetailError[`${e.target.name}Error`] = false;
             personalDetailError[`${e.target.name}HelperText`] = ''
             onChange('personalDetailError', personalDetailError);
@@ -160,6 +160,7 @@ const PersonalDetails = (props) => {
                         <Box>
                             <TextField
                                 fullWidth
+                                type='email'
                                 variant='filled'
                                 label='Mail id'
                                 onChange={(e) => handleChange(e)}

@@ -17,7 +17,7 @@ const AddressDetails = (props) => {
         addressDetails[e.target.name] = e.target.value;
         onChange('addressDetails', addressDetails);
     }
-    
+
     return (
         <Paper className={classes.AddressDetailsStyles} elevation={2}>
             <div style={{ padding: '25px 40px 40px 40px' }}>

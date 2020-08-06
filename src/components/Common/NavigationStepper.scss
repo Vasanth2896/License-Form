@@ -1,0 +1,58 @@
+
+.MuiGrid-root.MuiGrid-item.MuiGrid-grid-xs-3{
+    height:180px
+  }
+  
+  .MuiStepIcon-root.MuiStepIcon-active {
+    border: 2px solid blue;
+    border-radius: 50%;
+    color: white !important;
+  
+    .MuiStepIcon-text {
+      fill: blue;
+      font-size: 0.75rem;
+      font-weight: bold;
+      font-family: "Roboto", "Helvetica", "Arial", sans-serif;
+    }
+  }
+  
+  .MuiStepLabel-label.MuiStepLabel-active {
+    color: rgba(0, 0, 0, 0.54) !important ;
+  }
+  
+  .MuiStepConnector-lineVertical {
+    min-height: 24px;
+    border-left-style: solid;
+    border-left-width: 2px !important;
+  }
+  
+  .MuiStepConnector-line {
+    display: block;
+    border-color: blue !important;
+  }
+  
+  .MuiStepIcon-root {
+    border: 2px solid grey;
+    border-radius: 50%;
+    color: white;
+    display: block;
+  }
+  
+  .MuiStepConnector-vertical {
+    padding: unset !important;
+  }
+  
+  .MuiStepIcon-root.MuiStepIcon-completed {
+    color: white !important;
+  }
+  
+  .MuiStepIcon-root.MuiStepIcon-completed {
+    border: 2px solid blue !important;
+    background: blue !important;
+  }
+  
+  .MuiStepLabel-label.MuiStepLabel-completed {
+    color: blue !important;
+    font-weight: bolder !important;
+  }
+  

@@ -151,7 +151,10 @@ export function errorValidation() {
     return (dispatch, getState) => {
         const { personalDetails, userList, personalDetailError, editableIndex } = getState().appReducer;
         const { username, mailId } = personalDetails;
-        const mailIdRegex = /^([a-z A-Z 0-9 _\.\-])+\@(([a-z A-Z 0-9\-])+\.)+([a-z A-z 0-9]{3,3})+$/;
+        const mailIdRegex = /^([A-Z a-z][\w\d . _ -]+)@([\w\d _-]+).([a-z]{2,20})(\.[a-z]{2,10})$/;
+        // const mailIdRegex = /^[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,3}/;
+        // let mailIdRegex = /^\w+([.-]?\w+)@\w+([.-]?\w+)(.\w{2,3})+$/;
+        // const mailIdRegex = /^([a-z A-Z 0-9 _\.\-])+\@(([a-z A-Z 0-9\-])+\.)+([a-z A-z 0-9]{3,3})+$/;
         const newUserList = editableIndex !== null ? userList.filter((user, index) => { return index !== editableIndex }) : userList;
         const emailDuplicateFlag = newUserList.some(user => user.personalDetails.mailId === mailId);
 

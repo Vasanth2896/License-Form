@@ -12,7 +12,6 @@ import * as appActions from '../../store/appActions'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faArrowLeft } from '@fortawesome/free-solid-svg-icons'
 import NavigationStepper from '../Common/NavigationStepper';
-import './FormLayout.scss'
 
 const useStyles = makeStyles((theme) => ({
     root: {
@@ -47,10 +46,14 @@ const FormLayout = (props) => {
         }
     ];
 
+    function handleBlankSpace(detail){
+        return !detail.toString().replace(/\s/g, '').length <= 0;
+    }
+
     function CheckPersonalDetailsStep() {
         const { dateOfBirth, preferredLanguage, productKnowledge, other, ...textDetails } = personalDetails;
         const productKnowledgeChecked = Object.values(productKnowledge).some(checked => checked);
-        const textDetailsFilled = Object.values(textDetails).every(detail => detail !== '');
+        const textDetailsFilled = Object.values(textDetails).every(detail => handleBlankSpace(detail));
         const otherIsChecked = dateOfBirth && preferredLanguage.length &&
             productKnowledgeChecked && textDetailsFilled && productKnowledge.otherCheck && other !== '';
         const otherIsNotChecked = dateOfBirth && preferredLanguage.length
@@ -96,12 +99,12 @@ const FormLayout = (props) => {
 
     useEffect(() => {
         setErrorFree(newErrorFree);
-        handleComplete(Object.values(addressDetails).every(detail => detail !== ''), 1);
+        handleComplete(Object.values(addressDetails).every(detail => handleBlankSpace(detail)), 1);
         if (professionalDetailToggle === 'housewives') {
             handleComplete(true, 2);
         }
         else {
-            handleComplete(Object.values(state[professionalDetailToggle]).every(detail => detail !== ''), 2);
+            handleComplete(Object.values(state[professionalDetailToggle]).every(detail =>  handleBlankSpace(detail)), 2);
         }
 
     }, [professional, student, professionalDetailToggle, addressDetails, newErrorFree]);
