@@ -51,7 +51,94 @@ export const initialState = {
     },
     editableIndex: null,
     editUserId: null,
-    userList: []
+    userList: [
+        {
+            personalDetails: {
+                username: 'abishek',
+                gender: 'male',
+                dateOfBirth: null,
+                age: '',
+                mailId: 'abi@gmail.com',
+                mobileNumber: '',
+                motherTongue: '',
+                preferredLanguage: [],
+                productKnowledge: {
+                    newspaperCheck: false,
+                    tvCheck: false,
+                    facebookCheck: false,
+                    linkedInCheck: false,
+                    byFriendCheck: false,
+                    otherCheck: false
+                },
+                other: ''
+            },
+            addressDetails: {
+                communicationAddress: '',
+                district: '',
+                state: '',
+                country: '',
+                pincode: '',
+            },
+            student: {
+                currentQualification: '',
+                institutionName: '',
+                studyingAt: '',
+                institutionAddress: '',
+                district: '',
+                state: '',
+                country: '',
+                pincode: '',
+            },
+            professional: {
+                level: '',
+                salary: ''
+            },
+            professionalDetailToggle: 'student',
+        }, {
+            personalDetails: {
+                username: 'vasanth',
+                gender: 'male',
+                dateOfBirth: null,
+                age: '',
+                mailId: 'vasanth@gmail.com',
+                mobileNumber: '',
+                motherTongue: '',
+                preferredLanguage: [],
+                productKnowledge: {
+                    newspaperCheck: false,
+                    tvCheck: false,
+                    facebookCheck: false,
+                    linkedInCheck: false,
+                    byFriendCheck: false,
+                    otherCheck: false
+                },
+                other: ''
+            },
+            addressDetails: {
+                communicationAddress: '',
+                district: '',
+                state: '',
+                country: '',
+                pincode: '',
+            },
+            student: {
+                currentQualification: '',
+                institutionName: '',
+                studyingAt: '',
+                institutionAddress: '',
+                district: '',
+                state: '',
+                country: '',
+                pincode: '',
+            },
+            professional: {
+                level: '',
+                salary: ''
+            },
+            professionalDetailToggle: 'student',
+        },
+
+    ]
 }
 
 let globalId = 0;

@@ -18,6 +18,7 @@ const ProfessionalDetails = (props) => {
     const [professionalValue, setProfessionalValue] = useState(professionalDetailToggle);
     const [open, setOpen] = useState(false);
     const [editProfessionalValue, setEditProfessionalvalue] = useState(null);
+    
 
 
     const handleClickOpen = () => {
@@ -36,7 +37,7 @@ const ProfessionalDetails = (props) => {
     }
 
     const handleRadioChange = (e) => {
-        if (editableIndex) {
+        if (editableIndex !== null) {
             handleClickOpen();
             setEditProfessionalvalue(e.target.value);
         }

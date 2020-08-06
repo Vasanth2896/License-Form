@@ -23,7 +23,6 @@ const ActionComponent = (props) => {
 
     const handleDelete = (index) => {
         onDelete(index);
-
         setAnchorEl(null);
     }
 

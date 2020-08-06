@@ -29,9 +29,6 @@ const TableLayout = (props) => {
         searchInput, usernameSort, mailIdSort, mobileNumberSort,
         professionSort, addressSort, stateSort, districtSort } = userTableState;
 
-        console.log(filteredData);
-
-
     useEffect(() => {
         setUserTableState({ ...userTableState, filteredData: userList });
     }, [state])
@@ -40,10 +37,9 @@ const TableLayout = (props) => {
         if (props[0].id !== '') {
             const sortStyle = { ...userTableState };
             sortStyle[`${props[0].id + 'Sort'}`] = props[0].desc;
-            setUserTableState({ ...sortStyle })
+            setUserTableState({ ...sortStyle });
         }
     }
-
 
     const handleSearchInputchange = (e) => {
         setUserTableState({ ...userTableState, searchInput: e.target.value });
@@ -67,7 +63,6 @@ const TableLayout = (props) => {
                     user.addressDetails.state.toLowerCase().includes(searchInput.toLowerCase())
                 );
             });
-            console.log(newFilteredData);
             newFilteredData.length ?
                 setUserTableState({ ...userTableState, filteredData: newFilteredData }) : setUserTableState({ ...userTableState, filteredData: [] });
 
