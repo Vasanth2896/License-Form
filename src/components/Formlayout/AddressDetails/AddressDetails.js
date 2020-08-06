@@ -14,7 +14,7 @@ const AddressDetails = (props) => {
     const { addressDetails } = currentState;
 
     const handleChange = (e) => {
-        addressDetails[e.target.name] = e.target.value.trim();
+        addressDetails[e.target.name] = e.target.value;
         onChange('addressDetails', addressDetails);
     }
     
