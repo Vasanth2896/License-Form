@@ -32,6 +32,10 @@ export const AddressDetailsStyles = makeStyles({
 
 export const personalDetailStyles = makeStyles({
 
+    personalDetailsContainer:{
+        background: '#8080801f',
+        height: 'auto'
+    },
     genderGroupContainer: {
         display: 'flex',
         alignItems: 'center',

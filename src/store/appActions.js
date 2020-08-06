@@ -50,98 +50,11 @@ export const initialState = {
         mailIdHelperText: '',
     },
     editableIndex: null,
-    userList: [
-        {
-            id: 0,
-            personalDetails: {
-                username: 'dummy1',
-                gender: 'Male',
-                dateOfBirth: null,
-                age: '19',
-                mailId: 'dum@gmail.com',
-                mobileNumber: '123123123',
-                motherTongue: 'Tamil',
-                preferredLanguage: ['Tamil', 'Telugu'],
-                productKnowledge: {
-                    newspaperCheck: true,
-                    tvCheck: false,
-                    facebookCheck: false,
-                    linkedInCheck: false,
-                    byFriendCheck: false,
-                    otherCheck: false
-                },
-                other: ''
-            },
-            addressDetails: {
-                communicationAddress: 'dummy1',
-                district: 'salem',
-                state: 'TamilNadu',
-                country: 'India',
-                pincode: '123123',
-            },
-            student: {
-                currentQualification: '',
-                institutionName: '',
-                studyingAt: '',
-                institutionAddress: '',
-                district: '',
-                state: '',
-                country: '',
-                pincode: '',
-            },
-            professional: {
-                level: '',
-                salary: ''
-            },
-            professionalDetailToggle: 'housewives',
-        },
-        {
-            id: 1,
-            personalDetails: {
-                username: 'dummy2',
-                gender: 'female',
-                dateOfBirth: null,
-                age: '20',
-                mailId: 'dummy2@gmail.com',
-                mobileNumber: '123123123',
-                motherTongue: 'Tamil',
-                preferredLanguage: ['Telugu'],
-                productKnowledge: {
-                    newspaperCheck: true,
-                    tvCheck: false,
-                    facebookCheck: false,
-                    linkedInCheck: false,
-                    byFriendCheck: false,
-                    otherCheck: false
-                },
-                other: ''
-            },
-            addressDetails: {
-                communicationAddress: 'dummy2',
-                district: 'Salem',
-                state: 'TamilNadu',
-                country: 'India',
-                pincode: '123123',
-            },
-            student: {
-                currentQualification: 'B.E',
-                institutionName: 'dummy2',
-                studyingAt: 'dummy2',
-                institutionAddress: 'dummy2',
-                district: 'salem',
-                state: 'Tamil Nadu',
-                country: 'India',
-                pincode: '123123',
-            },
-            professional: {
-                level: '',
-                salary: ''
-            },
-            professionalDetailToggle: 'student',
-        },
-    ]
+    editUserId: null,
+    userList: []
 }
 
+let globalId = 0;
 
 export function app_onChange(name, value) {
     return { type: UPDATE_STATE, payload: { name: name, value: value } };
@@ -152,7 +65,6 @@ export function errorValidation() {
         const { personalDetails, userList, personalDetailError, editableIndex } = getState().appReducer;
         const { username, mailId } = personalDetails;
         const mailIdRegex = /^([a-z A-Z 0-9 _\.\-])+\@(([a-z A-Z 0-9\-])+\.)+([a-z A-z 0-9]{3,3})+$/;
-
         const newUserList = editableIndex !== null ? userList.filter((user, index) => { return index !== editableIndex }) : userList;
         const emailDuplicateFlag = newUserList.some(user => user.personalDetails.mailId === mailId);
 
@@ -161,8 +73,9 @@ export function errorValidation() {
             personalDetailError.mailIdHelperText = 'The mail id already exists';
         }
 
+        if (username === '' || username.toString().replace(/\s/g, '').length <= 0) {
+            console.log('This block is working');
 
-        if (username === '') {
             personalDetailError.usernameError = true;
             personalDetailError.usernameHelperText = 'Please enter the username';
         }
@@ -199,16 +112,18 @@ export function onCancel() {
         dispatch(app_onChange('professionalDetailToggle', professionalDetailToggle));
         dispatch(app_onChange('personalDetailError', { usernameError: false, mailIdError: false, usernameHelperText: "", mailIdHelperText: "" }));
         dispatch(app_onChange('editableIndex', null));
-
+        dispatch(app_onChange('editUserId', null));
     }
 }
 
 export function onSave() {
     return (dispatch, getState) => {
-        const { personalDetails, addressDetails, professional, student, professionalDetailToggle, userList, editableIndex } = getState().appReducer;
+        const { personalDetails, addressDetails, professional,
+            student, professionalDetailToggle, userList, editableIndex, editUserId } = getState().appReducer;
         const restoreInitialState = _.cloneDeep(initialState);
         if (editableIndex === null) {
             userList.push({
+                id: globalId++,
                 personalDetails: personalDetails,
                 addressDetails: addressDetails,
                 professional: professional,
@@ -218,6 +133,7 @@ export function onSave() {
         }
         else {
             const newEditeduser = {
+                id: editUserId,
                 personalDetails: personalDetails,
                 addressDetails: addressDetails,
                 professional: professional,
@@ -246,13 +162,14 @@ export function onDelete(deleteIndex) {
 }
 
 export function onEdit(editableIndex, editableData) {
-    return (dispatch, getState) => {
+    return (dispatch) => {
         dispatch(app_onChange('personalDetails', editableData.personalDetails));
         dispatch(app_onChange('addressDetails', editableData.addressDetails));
         dispatch(app_onChange('student', editableData.student));
         dispatch(app_onChange('professional', editableData.professional));
         dispatch(app_onChange('professionalDetailToggle', editableData.professionalDetailToggle));
         dispatch(app_onChange('editableIndex', editableIndex));
+        dispatch(app_onChange('editUserId', editableData.id));
     }
 }
 

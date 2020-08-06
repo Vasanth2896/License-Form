@@ -1,5 +1,4 @@
 import React from 'react';
-import './PersonalDetails.scss'
 import {
     TextField, Paper, Grid, Box, RadioGroup, FormLabel, FormControlLabel, Radio, withStyles
 } from '@material-ui/core';
@@ -38,7 +37,7 @@ const PersonalDetails = (props) => {
     const { productKnowledge } = personalDetails;
     const classes = personalDetailStyles();
     const handleChange = (e) => {
-        personalDetails[e.target.name] = e.target.value;
+        personalDetails[e.target.name] = e.target.value
         onChange('personalDetails', personalDetails);
         if (e.target.name === 'username' || e.target.name === 'mailId') {
             personalDetailError[`${e.target.name}Error`] = false;
@@ -100,7 +99,7 @@ const PersonalDetails = (props) => {
     ]
 
     return (
-        <Paper className='personalDetailsContainer' elevation={2}>
+        <Paper style={{ background: '#8080801f',height: 'auto'}} elevation={2}>
             <div style={{ padding: '25px 40px 40px 40px' }}>
                 <Grid container spacing={3}>
                     <Grid item xs={12} sm={6}>

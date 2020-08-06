@@ -13,10 +13,6 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faArrowLeft } from '@fortawesome/free-solid-svg-icons'
 import NavigationStepper from '../Common/NavigationStepper';
 import './FormLayout.scss'
-import _ from 'lodash';
-
-
-
 
 const useStyles = makeStyles((theme) => ({
     root: {
@@ -49,63 +45,46 @@ const FormLayout = (props) => {
             name: 'Professional Details',
             routePath: '/layout/ProfessionalDetails'
         }
-    ]
+    ];
 
-    // const data = _.cloneDeep(personalDetails);
-    // let test = false, productknowledgecheckflag = false, dateFlag = false, testingFlag = false, optionalFlag = false;
-    // let testing = [];
+    function CheckPersonalDetailsStep() {
+        const { dateOfBirth, preferredLanguage, productKnowledge, other, ...textDetails } = personalDetails;
+        const productKnowledgeChecked = Object.values(productKnowledge).some(checked => checked);
+        const textDetailsFilled = Object.values(textDetails).every(detail => detail !== '');
+        const otherIsChecked = dateOfBirth && preferredLanguage.length &&
+            productKnowledgeChecked && textDetailsFilled && productKnowledge.otherCheck && other !== '';
+        const otherIsNotChecked = dateOfBirth && preferredLanguage.length
+            && productKnowledgeChecked && textDetailsFilled && !productKnowledge.otherCheck;
 
-    // const dummy = (data) => {
+            
 
-    //     for (let key in data) {
-    //         if (typeof (data[key]) === 'object') {
-    //             if (Array.isArray(data[key])) {
-    //                 test = data[key].length > 0 
-    //             }
-    //             else {
-    //                 if (key === 'dateOfBirth') {
-    //                     dateFlag = data[key] !== null 
-    //                 }
-    //                 else {
-    //                     productknowledgecheckflag = Object.values(data[key]).some(detail => detail)
-    //                 }
-    //             }
-    //         }
-    //         else {
-    //             if (key === 'other' && data['productKnowledge'].otherCheck) {
-    //                 optionalFlag = data[key] !== '' ? true : false;
-    //             } else if (key !== 'other') {
-    //                 testing.push(data[key]);
-    //                 testingFlag = testing.every(detail => detail !== '');
-    //             }
-    //         }
-    //     }
-    // }
+        if (otherIsChecked || otherIsNotChecked) {
+            return true;
+        }
 
-    // dummy(data);
-    // const mainFlag = [test, productknowledgecheckflag, dateFlag, testingFlag].every(flag => flag);
+        return false;
+    }
 
-    // useEffect(() => {
+    useEffect(() => {
+        const personalDetailFlag = CheckPersonalDetailsStep();
+        handleComplete(personalDetailFlag, 0);
 
-    //     if (mainFlag && !optionalFlag) {
-    //         handleComplete(mainFlag, 0)
-    //     }
-    //     else if (mainFlag && optionalFlag) {
-    //         handleComplete(mainFlag, 0);
-    //     }
-    //     else {
-    //         handleComplete(false, 0);
-    //     }
-    // }, [mainFlag, optionalFlag])
+    }, [personalDetails]);
 
-    
+    useEffect(() => {
+        const { action, location } = history;
+        if (action === 'POP') {
+            const popStep = steps.find(step => step.routePath === location.pathname);
+            setActiveStep(popStep.id);
+        }
+    });
 
     const backButtonNavigation = (stepItem) => {
         if (stepItem.id) {
             history.push(steps[stepItem.id - 1].routePath);
-            setActiveStep(stepItem.id - 1)
+            setActiveStep(stepItem.id - 1);
         }
-        else{
+        else {
             history.push('/');
         }
     }

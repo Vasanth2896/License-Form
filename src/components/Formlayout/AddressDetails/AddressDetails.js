@@ -1,9 +1,10 @@
 import React from 'react';
-import {Paper, Grid, Box, TextField, Checkbox} from "@material-ui/core";
+import { Paper, Grid, Box, Checkbox } from "@material-ui/core";
 import _ from 'lodash'
 import { IndianStates } from "../../../seed/seed";
 import InputSelect from "../../Common/InputSelect";
-import {AddressDetailsStyles} from '../../Common/commonStyles'
+import InputText from '../../Common/InputText';
+import { AddressDetailsStyles } from '../../Common/commonStyles'
 
 
 const AddressDetails = (props) => {
@@ -13,38 +14,30 @@ const AddressDetails = (props) => {
     const { addressDetails } = currentState;
 
     const handleChange = (e) => {
-        addressDetails[e.target.name] = e.target.value;
+        addressDetails[e.target.name] = e.target.value.trim();
         onChange('addressDetails', addressDetails);
     }
-
+    
     return (
         <Paper className={classes.AddressDetailsStyles} elevation={2}>
             <div style={{ padding: '25px 40px 40px 40px' }}>
                 <h2>Communication Address</h2>
                 <Grid container spacing={5}>,
                     <Grid item xs={12}>
-                        <Box>
-                            <TextField
-                                fullWidth
-                                variant='filled'
-                                label='Address'
-                                name='communicationAddress'
-                                value={addressDetails.communicationAddress}
-                                onChange={(e) => handleChange(e)}
-                            />
-                        </Box>
+                        <InputText
+                            label='Address'
+                            name='communicationAddress'
+                            value={addressDetails.communicationAddress || ''}
+                            handleChange={handleChange}
+                        />
                     </Grid>
                     <Grid item xs={6}>
-                        <Box>
-                            <TextField
-                                fullWidth
-                                variant='filled'
-                                label='Country'
-                                name='country'
-                                value={addressDetails.country}
-                                onChange={(e) => handleChange(e)}
-                            />
-                        </Box>
+                        <InputText
+                            label='Country'
+                            name='country'
+                            value={addressDetails.country || ''}
+                            handleChange={handleChange}
+                        />
                     </Grid>
                     <Grid item xs={6}>
                         <InputSelect
@@ -52,33 +45,25 @@ const AddressDetails = (props) => {
                             labelId='state'
                             name='state'
                             handleChange={handleChange}
-                            value={addressDetails.state}
+                            value={addressDetails.state || ''}
                             menuOptions={IndianStates}
                         />
                     </Grid>
                     <Grid item xs={6}>
-                        <Box>
-                            <TextField
-                                fullWidth
-                                variant='filled'
-                                label='District'
-                                name='district'
-                                value={addressDetails.district}
-                                onChange={(e) => handleChange(e)}
-                            />
-                        </Box>
+                        <InputText
+                            label='District'
+                            name='district'
+                            value={addressDetails.district || ''}
+                            handleChange={handleChange}
+                        />
                     </Grid>
                     <Grid item xs={6}>
-                        <Box>
-                            <TextField
-                                fullWidth
-                                variant='filled'
-                                label='pincode'
-                                name='pincode'
-                                value={addressDetails.pincode}
-                                onChange={(e) => handleChange(e)}
-                            />
-                        </Box>
+                        <InputText
+                            label='pincode'
+                            name='pincode'
+                            value={addressDetails.pincode || ''}
+                            handleChange={handleChange}
+                        />
                     </Grid>
                     <Grid item xs={12}>
                         <Box style={{ display: 'flex', alignItems: 'center' }}>
@@ -89,7 +74,6 @@ const AddressDetails = (props) => {
                         </Box>
                     </Grid>
                 </Grid>
-
             </div>
         </Paper>
     )

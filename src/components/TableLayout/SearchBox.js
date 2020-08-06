@@ -22,7 +22,7 @@ const SearchBox = (props) => {
                     type='search'
                     variant='outlined'
                     onChange={(e) => handleSearchInputchange(e)}
-                    value={searchInput}
+                    value={searchInput || ''}
                 />
             </div>
             <div>

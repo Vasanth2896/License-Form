@@ -1,8 +1,8 @@
 import React from 'react';
 import { Paper, Grid } from "@material-ui/core";
-import _ from 'lodash'
-import InputSelect from '../../Common/InputSelect'
-import { professionalDetailsFormStyles} from '../../Common/commonStyles'
+import _ from 'lodash';
+import InputSelect from '../../Common/InputSelect';
+import { professionalDetailsFormStyles} from '../../Common/commonStyles';
 import { professionalLevelCategory, professionalSalaryLevel } from '../../../seed/seed';
 
 const ProfessionalForm = (props) => {
@@ -12,7 +12,7 @@ const ProfessionalForm = (props) => {
     const { professional } = currentState;
 
     const handleChange = (e) => {
-        professional[e.target.name] = e.target.value;
+        professional[e.target.name] = e.target.value
         onChange('professional', professional);
     }
 

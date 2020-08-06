@@ -1,7 +1,8 @@
 import React from 'react';
-import { Paper, Grid, Box, TextField } from "@material-ui/core";
-import _ from 'lodash'
+import { Paper, Grid, } from "@material-ui/core";
+import _ from 'lodash';
 import InputSelect from '../../Common/InputSelect';
+import InputText from '../../Common/InputText';
 import { IndianStates, currentQualificationList } from "../../../seed/seed";
 import { professionalDetailsFormStyles } from '../../Common/commonStyles'
 
@@ -11,7 +12,7 @@ const StudentForm = (props) => {
     const { student } = currentState;
     const classes = professionalDetailsFormStyles();
     const handleChange = (e) => {
-        student[e.target.name] = e.target.value;
+        student[e.target.name] = e.target.value
         onChange('student', student);
     }
 
@@ -30,52 +31,36 @@ const StudentForm = (props) => {
                         />
                     </Grid>
                     <Grid item xs={6}>
-                        <Box>
-                            <TextField
-                                variant='filled'
-                                label='Institution name'
-                                name='institutionName'
-                                value={student.institutionName}
-                                onChange={(e) => handleChange(e)}
-                                fullWidth
-                            />
-                        </Box>
+                        <InputText
+                            label='Institution name'
+                            name='institutionName'
+                            value={student.institutionName || ''}
+                            handleChange={handleChange}
+                        />
                     </Grid>
                     <Grid item xs={6}>
-                        <Box>
-                            <TextField
-                                variant='filled'
-                                label='Studying at'
-                                name='studyingAt'
-                                value={student.studyingAt}
-                                onChange={(e) => handleChange(e)}
-                                fullWidth
-                            />
-                        </Box>
+                        <InputText
+                            label='Studying at'
+                            name='studyingAt'
+                            value={student.studyingAt || ''}
+                            handleChange={handleChange}
+                        />
                     </Grid>
                     <Grid item xs={12}>
-                        <Box>
-                            <TextField
-                                variant='filled'
-                                label='Institution Address'
-                                name='institutionAddress'
-                                value={student.institutionAddress}
-                                onChange={(e) => handleChange(e)}
-                                fullWidth
-                            />
-                        </Box>
+                        <InputText
+                            label='Institution Address'
+                            name='institutionAddress'
+                            value={student.institutionAddress || ''}
+                            handleChange={handleChange}
+                        />
                     </Grid>
                     <Grid item xs={6}>
-                        <Box>
-                            <TextField
-                                variant='filled'
-                                label='Country'
-                                name='country'
-                                value={student.country}
-                                onChange={(e) => handleChange(e)}
-                                fullWidth
-                            />
-                        </Box>
+                        <InputText
+                            label='Country'
+                            name='country'
+                            value={student.country || ''}
+                            handleChange={handleChange}
+                        />
                     </Grid>
                     <Grid item xs={6}>
                         <InputSelect
@@ -83,33 +68,25 @@ const StudentForm = (props) => {
                             labelId='state'
                             name='state'
                             handleChange={handleChange}
-                            value={student.state}
+                            value={student.state || ''}
                             menuOptions={IndianStates}
                         />
                     </Grid>
                     <Grid item xs={6}>
-                        <Box>
-                            <TextField
-                                variant='filled'
-                                label='District'
-                                name='district'
-                                value={student.district}
-                                onChange={(e) => handleChange(e)}
-                                fullWidth
-                            />
-                        </Box>
+                        <InputText
+                            label='District'
+                            name='district'
+                            value={student.district || ''}
+                            onChange={(e) => handleChange(e)}
+                        />
                     </Grid>
                     <Grid item xs={6}>
-                        <Box>
-                            <TextField
-                                variant='filled'
-                                label='Pincode'
-                                name='pincode'
-                                value={student.pincode}
-                                onChange={(e) => handleChange(e)}
-                                fullWidth
-                            />
-                        </Box>
+                        <InputText
+                            label='Pincode'
+                            name='pincode'
+                            value={student.pincode || ''}
+                            onChange={(e) => handleChange(e)}
+                        />
                     </Grid>
                 </Grid>
             </div>
