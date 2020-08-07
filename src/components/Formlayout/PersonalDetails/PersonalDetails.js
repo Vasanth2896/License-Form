@@ -36,18 +36,19 @@ const PersonalDetails = (props) => {
     const { personalDetails, personalDetailError } = currentState;
     const { productKnowledge } = personalDetails;
     const classes = personalDetailStyles();
-    const handleChange = (e) => {
+    const handleChange = (e, values) => {
         personalDetails[e.target.name] = e.target.value
-        onChange('personalDetails', personalDetails);
+
+        if (values) {
+            personalDetails['preferredLanguage'] = values;
+        }
+
         if ((e.target.name === 'username' || e.target.name === 'mailId') && !e.target.value.toString().replace(/\s/g, '').length <= 0) {
             personalDetailError[`${e.target.name}Error`] = false;
             personalDetailError[`${e.target.name}HelperText`] = ''
             onChange('personalDetailError', personalDetailError);
         }
-    }
 
-    const onTagsChange = (e, values) => {
-        personalDetails['preferredLanguage'] = values;
         onChange('personalDetails', personalDetails);
     }
 
@@ -99,7 +100,7 @@ const PersonalDetails = (props) => {
     ]
 
     return (
-        <Paper style={{ background: '#8080801f',height: 'auto'}} elevation={2}>
+        <Paper style={{ background: '#8080801f', height: 'auto' }} elevation={2}>
             <div style={{ padding: '25px 40px 40px 40px' }}>
                 <Grid container spacing={3}>
                     <Grid item xs={12} sm={6}>
@@ -202,7 +203,7 @@ const PersonalDetails = (props) => {
                                 value={personalDetails.preferredLanguage}
                                 options={languages}
                                 getOptionLabel={language => language.name}
-                                onChange={(onTagsChange)}
+                                onChange={(handleChange)}
                                 renderInput={params => (
                                     <TextField
                                         {...params}
