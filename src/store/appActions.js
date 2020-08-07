@@ -51,94 +51,7 @@ export const initialState = {
     },
     editableIndex: null,
     editUserId: null,
-    userList: [
-        {
-            personalDetails: {
-                username: 'abishek',
-                gender: 'male',
-                dateOfBirth: null,
-                age: '',
-                mailId: 'abi@gmail.com',
-                mobileNumber: '',
-                motherTongue: '',
-                preferredLanguage: [],
-                productKnowledge: {
-                    newspaperCheck: false,
-                    tvCheck: false,
-                    facebookCheck: false,
-                    linkedInCheck: false,
-                    byFriendCheck: false,
-                    otherCheck: false
-                },
-                other: ''
-            },
-            addressDetails: {
-                communicationAddress: '',
-                district: '',
-                state: '',
-                country: '',
-                pincode: '',
-            },
-            student: {
-                currentQualification: '',
-                institutionName: '',
-                studyingAt: '',
-                institutionAddress: '',
-                district: '',
-                state: '',
-                country: '',
-                pincode: '',
-            },
-            professional: {
-                level: '',
-                salary: ''
-            },
-            professionalDetailToggle: 'student',
-        }, {
-            personalDetails: {
-                username: 'vasanth',
-                gender: 'male',
-                dateOfBirth: null,
-                age: '',
-                mailId: 'vasanth@gmail.com',
-                mobileNumber: '',
-                motherTongue: '',
-                preferredLanguage: [],
-                productKnowledge: {
-                    newspaperCheck: false,
-                    tvCheck: false,
-                    facebookCheck: false,
-                    linkedInCheck: false,
-                    byFriendCheck: false,
-                    otherCheck: false
-                },
-                other: ''
-            },
-            addressDetails: {
-                communicationAddress: '',
-                district: '',
-                state: '',
-                country: '',
-                pincode: '',
-            },
-            student: {
-                currentQualification: '',
-                institutionName: '',
-                studyingAt: '',
-                institutionAddress: '',
-                district: '',
-                state: '',
-                country: '',
-                pincode: '',
-            },
-            professional: {
-                level: '',
-                salary: ''
-            },
-            professionalDetailToggle: 'student',
-        },
-
-    ]
+    userList: []
 }
 
 let globalId = 0;
@@ -152,9 +65,6 @@ export function errorValidation() {
         const { personalDetails, userList, personalDetailError, editableIndex } = getState().appReducer;
         const { username, mailId } = personalDetails;
         const mailIdRegex = /^([A-Z a-z][\w\d . _ -]+)@([\w\d _-]+).([a-z]{2,20})(\.[a-z]{2,10})$/;
-        // const mailIdRegex = /^[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,3}/;
-        // let mailIdRegex = /^\w+([.-]?\w+)@\w+([.-]?\w+)(.\w{2,3})+$/;
-        // const mailIdRegex = /^([a-z A-Z 0-9 _\.\-])+\@(([a-z A-Z 0-9\-])+\.)+([a-z A-z 0-9]{3,3})+$/;
         const newUserList = editableIndex !== null ? userList.filter((user, index) => { return index !== editableIndex }) : userList;
         const emailDuplicateFlag = newUserList.some(user => user.personalDetails.mailId === mailId);
 
@@ -194,7 +104,7 @@ export function errorValidation() {
 export function onCancel() {
     return (dispatch) => {
         const restoreInitialState = _.cloneDeep(initialState);
-        const { personalDetails, addressDetails, professional, student, professionalDetailToggle} = restoreInitialState;
+        const { personalDetails, addressDetails, professional, student, professionalDetailToggle } = restoreInitialState;
         dispatch(app_onChange('personalDetails', personalDetails));
         dispatch(app_onChange('addressDetails', addressDetails));
         dispatch(app_onChange('professional', professional));
