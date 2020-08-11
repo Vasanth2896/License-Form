@@ -3,9 +3,6 @@ import { Grid, Paper, RadioGroup, Radio, FormControlLabel } from "@material-ui/c
 import StudentForm from './StudentForm';
 import ProfessionalForm from './ProfessionalForm';
 import HousewivesForm from './HousewivesForm';
-import { connect } from 'react-redux';
-import { bindActionCreators } from 'redux';
-import { app_onChange } from '../../../store/appActions'
 import _ from 'lodash'
 import { professionalDetailRadioButtonStyles } from '../../Common/commonStyles'
 import AlertBox from './AlertBox';
@@ -19,8 +16,6 @@ const ProfessionalDetails = (props) => {
     const [open, setOpen] = useState(false);
     const [editProfessionalValue, setEditProfessionalvalue] = useState(null);
     
-
-
     const handleClickOpen = () => {
         setOpen(true);
     };
@@ -102,16 +97,4 @@ const ProfessionalDetails = (props) => {
 
 }
 
-const mapStateToProps = (state) => {
-    return {
-        state: state.appReducer
-    }
-}
-
-const mapDispatchToProps = (dispatch) => {
-    return bindActionCreators({
-        onChange: app_onChange
-    }, dispatch)
-}
-
-export default connect(mapStateToProps, mapDispatchToProps)(ProfessionalDetails);
+export default ProfessionalDetails;

@@ -1,34 +1,14 @@
 import React from 'react';
 import {
-    TextField, Paper, Grid, Box, RadioGroup, FormLabel, FormControlLabel, Radio, withStyles
+    TextField, Paper, Grid, Box, RadioGroup, FormLabel, FormControlLabel, Radio, 
 } from '@material-ui/core';
-import { KeyboardDatePicker, MuiPickersUtilsProvider } from "@material-ui/pickers";
-import MomentUtils from "@date-io/moment";
-import moment from "moment";
-import { Autocomplete } from "@material-ui/lab";
 import _ from 'lodash'
 import InputSelect from '../../Common/InputSelect';
 import { languages } from '../../../seed/seed'
 import CheckboxGroup from '../../Common/CheckboxGroup';
 import { personalDetailStyles } from "../../Common/commonStyles";
-
-const CustomAutocomplete = withStyles({
-    tag: {
-        backgroundColor: "#BFB6AA",
-        height: 24,
-        position: "relative",
-        zIndex: 0,
-        "& .MuiChip-label": {
-            color: "black"
-        },
-        "&:after": {
-            content: '""',
-            position: "absolute",
-            backgroundColor: "grey",
-            zIndex: -1
-        }
-    }
-})(Autocomplete);
+import DatePicker from "./DatePicker";
+import LanguageAutoComplete from './LanguageAutoComplete';
 
 const PersonalDetails = (props) => {
     const { state, onChange } = props;
@@ -37,7 +17,8 @@ const PersonalDetails = (props) => {
     const { productKnowledge } = personalDetails;
     const classes = personalDetailStyles();
     const handleChange = (e, values) => {
-        personalDetails[e.target.name] = e.target.value
+        console.log(e, values);
+        personalDetails[e.target.name] = e.target.value;
 
         if (values) {
             personalDetails['preferredLanguage'] = values;
@@ -128,22 +109,10 @@ const PersonalDetails = (props) => {
                         </Box>
                     </Grid>
                     <Grid item xs={6}>
-                        <Box>
-                            <MuiPickersUtilsProvider libInstance={moment} utils={MomentUtils} >
-                                <KeyboardDatePicker
-                                    clearable
-                                    label='Date Of birth'
-                                    value={personalDetails.dateOfBirth}
-                                    onChange={date => {
-                                        personalDetails['dateOfBirth'] = date
-                                        onChange('personalDetails', personalDetails);
-                                    }}
-                                    format="DD/MM/YYYY"
-                                    inputVariant='filled'
-                                    fullWidth
-                                />
-                            </MuiPickersUtilsProvider>
-                        </Box>
+                        <DatePicker
+                            personalDetails={personalDetails}
+                            onChange={onChange}
+                        />
                     </Grid>
                     <Grid item xs={6}>
                         <Box>
@@ -196,25 +165,11 @@ const PersonalDetails = (props) => {
                         />
                     </Grid>
                     <Grid item xs={12}>
-                        <Box>
-                            <CustomAutocomplete
-                                multiple
-                                id="tags-standard"
-                                value={personalDetails.preferredLanguage}
-                                options={languages}
-                                getOptionLabel={language => language.name}
-                                onChange={(handleChange)}
-                                renderInput={params => (
-                                    <TextField
-                                        {...params}
-                                        variant="filled"
-                                        label="Preferred languages for the app"
-                                        margin="normal"
-                                        fullWidth
-                                    />
-                                )}
-                            />
-                        </Box>
+                        < LanguageAutoComplete
+                            personalDetails={personalDetails}
+                            languages={languages}
+                            handleChange={handleChange}
+                        />
                     </Grid>
                     <Grid item xs={12}>
                         <CheckboxGroup

@@ -32,7 +32,7 @@ export const AddressDetailsStyles = makeStyles({
 
 export const personalDetailStyles = makeStyles({
 
-    personalDetailsContainer:{
+    personalDetailsContainer: {
         background: '#8080801f',
         height: 'auto'
     },
@@ -58,6 +58,14 @@ export const personalDetailStyles = makeStyles({
     },
     hideOrder: {
         display: 'none'
+    }
+});
+
+
+export const footerButtonStyles = makeStyles({
+    proceed: {
+        background: 'blue',
+        color: 'white'
     }
 });
 

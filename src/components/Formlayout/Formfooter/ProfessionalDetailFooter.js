@@ -1,10 +1,12 @@
 import React from "react";
 import { Button } from "@material-ui/core";
+import { footerButtonStyles } from "../../Common/commonStyles";
 
 const ProfessionalDetailFooter = (props) => {
 
     const { history, handleBack, errorValidation, onSave, setActiveStep, state } = props;
     const { editableIndex } = state;
+    const classes = footerButtonStyles();
 
     const handleSave = () => {
         const isValid = errorValidation();
@@ -29,7 +31,7 @@ const ProfessionalDetailFooter = (props) => {
             <Button
                 variant='contained'
                 onClick={handleSave}
-                style={{ background: 'blue', color: 'white' }}
+                className={classes.proceed}
             >{editableIndex !== null ? 'update':'save'}</Button>
         </div>
     )

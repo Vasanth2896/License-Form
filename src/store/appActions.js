@@ -74,7 +74,6 @@ export function errorValidation() {
         }
 
         if (username === '' || username.toString().replace(/\s/g, '').length <= 0) {
-            console.log('This block is working');
 
             personalDetailError.usernameError = true;
             personalDetailError.usernameHelperText = 'Please enter the username';
